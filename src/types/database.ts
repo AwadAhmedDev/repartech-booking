@@ -1,0 +1,73 @@
+export type AppointmentStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled'
+
+export interface Service {
+  id: string
+  name: string
+  description: string
+  duration_minutes: number
+  price: number
+  is_active: boolean
+  created_at: string
+}
+
+export interface Appointment {
+  id: string
+  service_id: string
+  full_name: string
+  email: string
+  phone: string
+  notes: string | null
+  appointment_date: string
+  start_time: string
+  end_time: string
+  status: AppointmentStatus
+  created_at: string
+}
+
+export interface AppointmentWithService extends Appointment {
+  services: Pick<Service, 'id' | 'name' | 'duration_minutes' | 'price'> | null
+}
+
+export interface BusinessHours {
+  id: string
+  weekday: number
+  is_open: boolean
+  start_time: string | null
+  end_time: string | null
+}
+
+export interface BlockedDate {
+  id: string
+  blocked_date: string
+  reason: string | null
+  created_at: string
+}
+
+export interface BusinessSettings {
+  id: string
+  business_name: string
+  business_email: string
+  business_phone: string
+  business_address: string
+  slot_interval_minutes: number
+  booking_notice_hours: number
+  created_at: string
+}
+
+export interface AdminUser {
+  id: string
+  user_id: string
+  created_at: string
+}
+
+export interface NewAppointmentInput {
+  service_id: string
+  full_name: string
+  email: string
+  phone: string
+  notes: string | null
+  appointment_date: string
+  start_time: string
+  end_time: string
+  status: AppointmentStatus
+}
