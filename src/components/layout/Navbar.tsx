@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Cpu, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { useBusinessSettings } from '../../contexts/BusinessSettingsContext'
 
 const NAV_LINKS = [
@@ -28,9 +28,9 @@ export function Navbar() {
     }`}>
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
 
-        <Link to="/" className="flex items-center gap-2.5">
+        <Link to="/" className="flex items-center gap-3">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-            <Cpu className="h-4 w-4 text-white" strokeWidth={2.25} />
+            <span className="font-display text-[11px] font-bold tracking-tight text-white">RT</span>
           </span>
           <span className="font-display text-base font-semibold tracking-tight text-slate-900">
             {settings?.business_name ?? 'RéparTech'}

@@ -1,10 +1,9 @@
-import { Award, Users, Wrench } from 'lucide-react'
 import { images } from '../../data/images'
 
-const HIGHLIGHTS = [
-  { icon: Award, label: "Plus de 15 ans d'expérience technique cumulée" },
-  { icon: Users, label: 'Plus de 300 entreprises locales nous font confiance' },
-  { icon: Wrench, label: 'Toutes les grandes marques de matériel prises en charge' },
+const STATS = [
+  { value: '15+', label: "ans d'expérience" },
+  { value: '300+', label: 'entreprises clientes' },
+  { value: '98 %', label: 'clients satisfaits' },
 ]
 
 export function About() {
@@ -13,48 +12,50 @@ export function About() {
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
           <div className="relative order-2 lg:order-1">
-            <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-lg">
+            <div className="overflow-hidden rounded-2xl">
               <img
                 src={images.supportTeam}
                 alt="Techniciens de support RéparTech dans un environnement de bureau moderne"
-                className="h-[440px] w-full object-cover"
+                className="h-[480px] w-full object-cover"
               />
-            </div>
-            <div className="absolute -bottom-6 -right-6 hidden w-60 rounded-xl border border-slate-200 bg-white p-5 shadow-lg sm:block">
-              <p className="font-display text-3xl font-bold text-slate-900">98 %</p>
-              <p className="mt-1 text-xs text-slate-500">des clients notent leur service 5 étoiles</p>
             </div>
           </div>
 
           <div className="order-1 lg:order-2">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">
-              À Propos de Nous
+              Notre Histoire
             </span>
-            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
               Un Partenaire Technologique, Pas Seulement un Atelier de Réparation
             </h2>
             <p className="mt-5 text-base leading-relaxed text-slate-600">
               RéparTech a été conçu pour offrir aux particuliers et aux entreprises un endroit unique
               et fiable pour la réparation informatique et le support technologique. Nos techniciens
               interviennent sur les appareils grand public, les postes de travail professionnels et les
-              environnements réseau complets — combinant compétence pratique en réparation matérielle,
-              diagnostics structurés et communication claire.
+              environnements réseau complets.
             </p>
             <p className="mt-4 text-base leading-relaxed text-slate-600">
-              Qu'il s'agisse d'un écran d'ordinateur portable fissuré, d'une infection par logiciel
-              malveillant, d'un disque dur défaillant ou d'un réseau d'entreprise à surveiller, nous
-              traitons chaque intervention avec le même niveau de professionnalisme et de transparence.
+              Qu'il s'agisse d'un écran fissuré, d'une infection par logiciel malveillant, d'un disque
+              dur défaillant ou d'un réseau d'entreprise à surveiller, nous traitons chaque
+              intervention avec le même niveau de professionnalisme et de transparence.
             </p>
 
-            <div className="mt-8 flex flex-col gap-4">
-              {HIGHLIGHTS.map((item) => (
-                <div key={item.label} className="flex items-center gap-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50">
-                    <item.icon className="h-4 w-4 text-blue-600" />
-                  </span>
-                  <span className="text-sm text-slate-700">{item.label}</span>
+            <div className="mt-10 grid grid-cols-3 gap-4">
+              {STATS.map((stat) => (
+                <div key={stat.label} className="border-l-2 border-blue-600 pl-4">
+                  <p className="font-display text-2xl font-bold text-slate-900">{stat.value}</p>
+                  <p className="mt-0.5 text-xs text-slate-500">{stat.label}</p>
                 </div>
               ))}
+            </div>
+
+            <div className="mt-10">
+              <a
+                href="#booking"
+                className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
+              >
+                Réserver une intervention
+              </a>
             </div>
           </div>
         </div>
