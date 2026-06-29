@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { CheckCircle2, Loader2 } from 'lucide-react'
 import { fetchBusinessSettings, updateBusinessSettings } from '../../lib/api'
 import { PageHeader } from '../../components/admin/PageHeader'
@@ -29,7 +29,7 @@ export function BusinessSettingsPage() {
       .finally(() => setLoading(false))
   }
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: { preventDefault(): void }) {
     e.preventDefault()
     if (!settings) return
     setSaving(true)

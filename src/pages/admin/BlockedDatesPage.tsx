@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useState } from 'react'
 import { CalendarOff, Loader2, Plus, Trash2 } from 'lucide-react'
 import { createBlockedDate, deleteBlockedDate, fetchBlockedDates } from '../../lib/api'
 import { formatDateLong } from '../../lib/format'
@@ -32,7 +32,7 @@ export function BlockedDatesPage() {
       .finally(() => setLoading(false))
   }
 
-  async function handleAdd(e: FormEvent) {
+  async function handleAdd(e: { preventDefault(): void }) {
     e.preventDefault()
     if (!newDate) return
     setAdding(true)
