@@ -1,26 +1,21 @@
-import { Clock, DollarSign, SearchCheck, ShieldCheck } from 'lucide-react'
 import { images } from '../../data/images'
 
 const REASONS = [
   {
-    icon: SearchCheck,
     title: 'Une Approche Centrée sur le Diagnostic',
     description:
       'Chaque réparation commence par un diagnostic complet, pour que vous sachiez exactement ce qui ne va pas avant le début des travaux.',
   },
   {
-    icon: Clock,
     title: 'Délai Rapide, Garanti',
     description:
       'La plupart des diagnostics et réparations standards sont réalisés en 24 à 48 heures, avec des options prioritaires disponibles.',
   },
   {
-    icon: DollarSign,
     title: 'Tarification 100 % Transparente',
     description: 'Tarifs forfaitaires sans frais cachés. Vous approuvez le coût avant toute réparation.',
   },
   {
-    icon: ShieldCheck,
     title: 'Techniciens Certifiés et Vérifiés',
     description:
       'Expérimentés sur du matériel grand public et professionnel. Chaque intervention est documentée.',
@@ -46,15 +41,12 @@ export function WhyChooseUs() {
 
             <div className="mt-12 flex flex-col gap-0 divide-y divide-slate-200">
               {REASONS.map((reason, idx) => (
-                <div key={reason.title} className="flex gap-6 py-6 first:pt-0 last:pb-0">
-                  <span className="font-display text-3xl font-bold text-slate-200 leading-none select-none w-9 shrink-0 pt-0.5">
+                <div key={reason.title} className="flex gap-6 py-7 first:pt-0 last:pb-0">
+                  <span className="font-display text-4xl font-bold leading-none text-blue-600/[0.18] select-none w-10 shrink-0 pt-0.5">
                     {String(idx + 1).padStart(2, '0')}
                   </span>
                   <div>
-                    <div className="flex items-center gap-2">
-                      <reason.icon className="h-4 w-4 text-blue-600 shrink-0" />
-                      <h3 className="text-sm font-semibold text-slate-900">{reason.title}</h3>
-                    </div>
+                    <h3 className="text-sm font-semibold text-slate-900">{reason.title}</h3>
                     <p className="mt-1.5 text-sm leading-relaxed text-slate-500">{reason.description}</p>
                   </div>
                 </div>
@@ -62,7 +54,7 @@ export function WhyChooseUs() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 lg:sticky lg:top-24">
+          <div className="grid grid-cols-2 gap-4 lg:sticky lg:top-28">
             <div className="space-y-4">
               <img
                 src={images.serverRoom}

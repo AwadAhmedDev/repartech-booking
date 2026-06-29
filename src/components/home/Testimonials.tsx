@@ -79,15 +79,25 @@ export function Testimonials() {
           {rest.map((t) => (
             <div
               key={t.name}
-              className="flex flex-col rounded-2xl border border-slate-200 bg-slate-50 p-8"
+              className="relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-10"
             >
-              <Stars count={t.rating} />
-              <blockquote className="mt-5 flex-1 text-sm leading-relaxed text-slate-700">
-                {t.quote}
-              </blockquote>
-              <div className="mt-6 border-t border-slate-200 pt-5">
-                <p className="text-sm font-semibold text-slate-900">{t.name}</p>
-                <p className="text-xs text-slate-500">{t.role} · {t.location}</p>
+              <span className="pointer-events-none absolute -top-2 left-7 font-display text-[7rem] leading-none text-slate-100 select-none">
+                "
+              </span>
+              <div className="relative">
+                <Stars count={t.rating} />
+                <blockquote className="mt-5 flex-1 text-sm leading-relaxed text-slate-700">
+                  {t.quote}
+                </blockquote>
+                <div className="mt-8 flex items-center gap-3 border-t border-slate-100 pt-6">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 font-display text-sm font-bold text-slate-600">
+                    {t.name[0]}
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">{t.name}</p>
+                    <p className="text-xs text-slate-500">{t.role} · {t.location}</p>
+                  </div>
+                </div>
               </div>
             </div>
           ))}

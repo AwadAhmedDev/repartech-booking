@@ -256,17 +256,27 @@ export function BookingSection({
   return (
     <section id="booking" className="relative bg-slate-50 py-24 lg:py-32">
       <div className="mx-auto max-w-4xl px-6 lg:px-10">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">
-            Réserver un Rendez-vous
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Demandez de l'Aide en Moins d'une Minute
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-slate-600">
-            Sélectionnez un service, choisissez un horaire qui vous convient, et nous nous occupons du
-            reste.
-          </p>
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-xl">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">
+              Réserver un Rendez-vous
+            </span>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+              Planifiez votre Intervention en 3 Étapes
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-slate-600">
+              Choisissez un service, sélectionnez un créneau disponible et laissez vos coordonnées.
+              Nous confirmons par e-mail dans les minutes qui suivent.
+            </p>
+          </div>
+          {settings?.business_phone && (
+            <a
+              href={`tel:${settings.business_phone}`}
+              className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50"
+            >
+              Ou appelez-nous directement : {settings.business_phone}
+            </a>
+          )}
         </div>
 
         <div className="mt-12 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10">
