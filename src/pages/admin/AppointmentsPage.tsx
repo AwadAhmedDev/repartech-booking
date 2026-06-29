@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Loader2, X } from 'lucide-react'
-import { fetchAllAppointments, updateAppointmentStatus } from '../../lib/api'
+import { CheckCircle2, Loader2, Mail, X } from 'lucide-react'
+import {
+  fetchAllAppointments,
+  sendAppointmentConfirmedEmail,
+  updateAppointmentStatus,
+} from '../../lib/api'
 import { formatCurrency, formatDateLong, formatTimeLabel } from '../../lib/format'
 import { PageHeader } from '../../components/admin/PageHeader'
 import { StatusBadge, STATUS_LABELS } from '../../components/admin/StatusBadge'
@@ -24,6 +28,7 @@ export function AppointmentsPage() {
   const [statusFilter, setStatusFilter] = useState<AppointmentStatus | 'all'>('all')
   const [dateFilter, setDateFilter] = useState('')
   const [updatingId, setUpdatingId] = useState<string | null>(null)
+  const [emailSentId, setEmailSentId] = useState<string | null>(null)
 
   useEffect(() => {
     load()
@@ -41,14 +46,35 @@ export function AppointmentsPage() {
       .finally(() => setLoading(false))
   }
 
-  async function handleStatusChange(id: string, status: AppointmentStatus) {
-    setUpdatingId(id)
+  async function handleStatusChange(appt: AppointmentWithService, newStatus: AppointmentStatus) {
+    const prevStatus = appt.status
+    setUpdatingId(appt.id)
     setActionError(null)
+    setEmailSentId(null)
+
     try {
-      await updateAppointmentStatus(id, status)
-      // Only sync local state after Supabase confirms the write succeeded,
-      // so the UI never shows a status that wasn't actually persisted.
-      setAppointments((prev) => prev.map((a) => (a.id === id ? { ...a, status } : a)))
+      await updateAppointmentStatus(appt.id, newStatus)
+      setAppointments((prev) =>
+        prev.map((a) => (a.id === appt.id ? { ...a, status: newStatus } : a)),
+      )
+
+      // Send confirmation email only when moving from pending → confirmed
+      if (prevStatus === 'pending' && newStatus === 'confirmed' && appt.services) {
+        sendAppointmentConfirmedEmail({
+          customerName: appt.full_name,
+          customerEmail: appt.email,
+          serviceName: appt.services.name,
+          appointmentDate: appt.appointment_date,
+          startTime: appt.start_time,
+          endTime: appt.end_time,
+          notes: appt.notes,
+        })
+          .then(() => {
+            setEmailSentId(appt.id)
+            setTimeout(() => setEmailSentId(null), 5000)
+          })
+          .catch((err) => console.error('Confirmation email failed (non-blocking):', err))
+      }
     } catch (err) {
       console.error('Failed to update appointment status:', err)
       setActionError('Impossible de mettre à jour le statut de ce rendez-vous. Veuillez réessayer.')
@@ -138,22 +164,45 @@ export function AppointmentsPage() {
                       {a.notes}
                     </p>
                   )}
+
+                  {/* Email sent confirmation badge */}
+                  {emailSentId === a.id && (
+                    <div className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-green-500/30 bg-green-500/10 px-3 py-1.5 text-xs font-medium text-green-400">
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                      E-mail de confirmation envoyé au client
+                    </div>
+                  )}
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
-                  {updatingId === a.id && <Loader2 className="h-4 w-4 animate-spin text-white/40" />}
-                  <select
-                    value={a.status}
-                    disabled={updatingId === a.id}
-                    onChange={(e) => handleStatusChange(a.id, e.target.value as AppointmentStatus)}
-                    className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white outline-none transition-colors focus:border-cyan-400/60 disabled:opacity-60"
-                  >
-                    {STATUS_OPTIONS.map((status) => (
-                      <option key={status} value={status} className="bg-navy-900">
-                        {STATUS_LABELS[status]}
-                      </option>
-                    ))}
-                  </select>
+                <div className="flex shrink-0 flex-col items-end gap-2">
+                  <div className="flex items-center gap-2">
+                    {updatingId === a.id && <Loader2 className="h-4 w-4 animate-spin text-white/40" />}
+                    <select
+                      value={a.status}
+                      disabled={updatingId === a.id}
+                      onChange={(e) => handleStatusChange(a, e.target.value as AppointmentStatus)}
+                      className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white outline-none transition-colors focus:border-cyan-400/60 disabled:opacity-60"
+                    >
+                      {STATUS_OPTIONS.map((status) => (
+                        <option key={status} value={status} className="bg-navy-900">
+                          {STATUS_LABELS[status]}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Quick confirm button — only shown when pending */}
+                  {a.status === 'pending' && (
+                    <button
+                      type="button"
+                      disabled={updatingId === a.id}
+                      onClick={() => handleStatusChange(a, 'confirmed')}
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-green-600/20 border border-green-500/30 px-3 py-1.5 text-xs font-semibold text-green-400 transition-colors hover:bg-green-600/30 disabled:opacity-60"
+                    >
+                      <Mail className="h-3.5 w-3.5" />
+                      Confirmer &amp; envoyer e-mail
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

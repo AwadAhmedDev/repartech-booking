@@ -128,6 +128,40 @@ export async function sendBookingEmails(payload: BookingEmailPayload): Promise<v
   }
 }
 
+export interface ConfirmedEmailPayload {
+  customerName: string
+  customerEmail: string
+  serviceName: string
+  appointmentDate: string
+  startTime: string
+  endTime: string
+  notes: string | null
+}
+
+/**
+ * Sends an "appointment confirmed" email to the client.
+ * Called by the admin dashboard when status changes to 'confirmed'.
+ */
+export async function sendAppointmentConfirmedEmail(payload: ConfirmedEmailPayload): Promise<void> {
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+  const res = await fetch(`${supabaseUrl}/functions/v1/send-appointment-confirmed`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${supabaseAnonKey}`,
+      apikey: supabaseAnonKey,
+    },
+    body: JSON.stringify(payload),
+  })
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => '')
+    throw new Error(`Confirmation email failed (${res.status}): ${body}`)
+  }
+}
+
 // ---------- Admin: appointments ----------
 
 export async function fetchAllAppointments(): Promise<AppointmentWithService[]> {
