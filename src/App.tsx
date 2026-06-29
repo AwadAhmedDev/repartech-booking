@@ -1,4 +1,5 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { PublicLayout } from './components/layout/PublicLayout'
 import { HomePage } from './pages/HomePage'
 import { AdminAuthProvider } from './contexts/AdminAuthContext'
@@ -13,29 +14,33 @@ import { BusinessSettingsPage } from './pages/admin/BusinessSettingsPage'
 
 function App() {
   return (
-    <AdminAuthProvider>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <PublicLayout>
-              <HomePage />
-            </PublicLayout>
-          }
-        />
+    <ErrorBoundary>
+      <AdminAuthProvider>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <PublicLayout>
+                <HomePage />
+              </PublicLayout>
+            }
+          />
 
-        <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route path="/admin/login" element={<AdminLoginPage />} />
 
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<OverviewPage />} />
-          <Route path="appointments" element={<AppointmentsPage />} />
-          <Route path="services" element={<ServicesPage />} />
-          <Route path="business-hours" element={<BusinessHoursPage />} />
-          <Route path="blocked-dates" element={<BlockedDatesPage />} />
-          <Route path="settings" element={<BusinessSettingsPage />} />
-        </Route>
-      </Routes>
-    </AdminAuthProvider>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<OverviewPage />} />
+            <Route path="appointments" element={<AppointmentsPage />} />
+            <Route path="services" element={<ServicesPage />} />
+            <Route path="business-hours" element={<BusinessHoursPage />} />
+            <Route path="blocked-dates" element={<BlockedDatesPage />} />
+            <Route path="settings" element={<BusinessSettingsPage />} />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AdminAuthProvider>
+    </ErrorBoundary>
   )
 }
 

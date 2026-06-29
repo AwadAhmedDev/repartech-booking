@@ -74,9 +74,20 @@ export async function fetchAppointmentsForDateRange(
 
 // ---------- Public write (booking) ----------
 
+export class SlotConflictError extends Error {
+  constructor() {
+    super('slot_conflict')
+    this.name = 'SlotConflictError'
+  }
+}
+
 export async function createAppointment(input: NewAppointmentInput): Promise<void> {
   const { error } = await supabase.from('appointments').insert(input)
-  if (error) throw error
+  if (error) {
+    // PostgreSQL unique violation — the slot was taken by a concurrent booking
+    if (error.code === '23505') throw new SlotConflictError()
+    throw error
+  }
 }
 
 // ---------- Email notifications ----------

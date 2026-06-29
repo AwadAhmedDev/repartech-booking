@@ -8,6 +8,7 @@ import {
   fetchBusinessHours,
   fetchBusinessSettings,
   sendBookingEmails,
+  SlotConflictError,
 } from '../../lib/api'
 import { getAvailableSlots, toDateKey, toTimeKey, type TimeSlot } from '../../lib/availability'
 import type { BlockedDate, BusinessHours, BusinessSettings, Service } from '../../types/database'
@@ -52,6 +53,7 @@ export function BookingSection({
   const [formErrors, setFormErrors] = useState<Partial<Record<keyof BookingFormValues, string>>>({})
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [slotConflict, setSlotConflict] = useState(false)
   const [summary, setSummary] = useState<BookingSummary | null>(null)
 
   useEffect(() => {
@@ -68,6 +70,7 @@ export function BookingSection({
     Promise.all([fetchActiveServices(), fetchBusinessHours(), fetchBlockedDates(), fetchBusinessSettings()])
       .then(([s, h, b, settingsData]) => {
         if (!isMounted) return
+        if (!settingsData) throw new Error('Business settings not configured')
         setServices(s)
         setBusinessHours(h)
         setBlockedDates(b)
@@ -118,6 +121,7 @@ export function BookingSection({
   // service/date is no longer valid.
   useEffect(() => {
     setSelectedSlot(null)
+    setSlotConflict(false)
 
     if (!selectedDate || !selectedService || !settings) {
       setSlots([])
@@ -232,8 +236,17 @@ export function BookingSection({
       })
       setStep('success')
     } catch (err) {
-      console.error('Failed to submit appointment request:', err)
-      setSubmitError("Nous n'avons pas pu envoyer votre demande. Veuillez réessayer.")
+      if (err instanceof SlotConflictError) {
+        // The slot was claimed by another booking between the user selecting it
+        // and submitting — send them back to pick a different time.
+        setSelectedSlot(null)
+        setSlotConflict(true)
+        setStep('datetime')
+        setSelectedDate((prev) => (prev ? new Date(prev.getTime()) : null))
+      } else {
+        console.error('Failed to submit appointment request:', err)
+        setSubmitError("Nous n'avons pas pu envoyer votre demande. Veuillez réessayer.")
+      }
     } finally {
       setSubmitting(false)
     }
@@ -325,6 +338,12 @@ export function BookingSection({
             <>
               {step === 'service' && (
                 <ServiceStep services={services} selectedServiceId={selectedServiceId} onSelect={setSelectedServiceId} />
+              )}
+
+              {step === 'datetime' && slotConflict && (
+                <div className="mb-5 rounded-xl border border-warning-500/30 bg-warning-500/10 px-5 py-4 text-sm text-warning-500">
+                  Ce créneau vient d'être réservé par quelqu'un d'autre. Veuillez choisir un autre horaire.
+                </div>
               )}
 
               {step === 'datetime' && (

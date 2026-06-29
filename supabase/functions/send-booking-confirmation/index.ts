@@ -52,6 +52,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
         to: customerEmail,
         subject: `Confirmation de rendez-vous — ${serviceName}`,
         html: buildCustomerEmail({ customerName, serviceName, formattedDate, formattedTime, notes }),
+        reply_to: ADMIN_EMAIL || undefined,
       }),
     ]
 
@@ -88,20 +89,31 @@ function json(body: unknown, status = 200): Response {
   })
 }
 
-async function sendEmail({ from, to, subject, html }: { from: string; to: string; subject: string; html: string }) {
+async function sendEmail({ from, to, subject, html, reply_to }: { from: string; to: string; subject: string; html: string; reply_to?: string }) {
+  const payload: Record<string, string> = { from, to, subject, html }
+  if (reply_to) payload.reply_to = reply_to
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${RESEND_API_KEY}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ from, to, subject, html }),
+    body: JSON.stringify(payload),
   })
   if (!res.ok) {
     const text = await res.text().catch(() => '')
     throw new Error(`Resend ${res.status}: ${text}`)
   }
   return res.json()
+}
+
+function escHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
 }
 
 function formatDate(dateStr: string): string {
@@ -155,10 +167,9 @@ function buildCustomerEmail(p: {
   formattedTime: string
   notes: string | null
 }): string {
-  const firstName = p.customerName.split(' ')[0] ?? p.customerName
-  const notesRow = p.notes
-    ? detailRow('Remarques', p.notes, true)
-    : ''
+  const safeName = escHtml(p.customerName)
+  const firstName = safeName.split(' ')[0] ?? safeName
+  const notesRow = p.notes ? detailRow('Remarques', escHtml(p.notes), true) : ''
 
   return baseWrapper(
     'Votre rendez-vous a bien été reçu',
@@ -170,7 +181,7 @@ function buildCustomerEmail(p: {
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:20px 20px 12px;">
       <p style="margin:0 0 14px;font-size:11px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em;font-weight:600;">Détails du rendez-vous</p>
       <table style="width:100%;border-collapse:collapse;">
-        ${detailRow('Service', p.serviceName)}
+        ${detailRow('Service', escHtml(p.serviceName))}
         ${detailRow('Date', p.formattedDate)}
         ${detailRow('Heure', p.formattedTime)}
         ${notesRow}
@@ -180,7 +191,7 @@ function buildCustomerEmail(p: {
       <p style="margin:0;color:#f59e0b;font-size:13px;">⏳ Statut : <strong>En attente de confirmation</strong></p>
     </div>
     <p style="margin:24px 0 0;color:rgba(255,255,255,0.4);font-size:13px;line-height:1.6;">
-      Des questions ? Répondez simplement à cet e-mail ou appelez-nous directement.
+      Des questions ? Répondez à cet e-mail — notre équipe vous contactera rapidement.
     </p>`,
   )
 }
@@ -194,7 +205,7 @@ function buildAdminEmail(p: {
   formattedTime: string
   notes: string | null
 }): string {
-  const notesRow = p.notes ? detailRow('Remarques', p.notes, true) : ''
+  const notesRow = p.notes ? detailRow('Remarques', escHtml(p.notes), true) : ''
 
   return baseWrapper(
     'Nouvelle demande de rendez-vous',
@@ -205,10 +216,10 @@ function buildAdminEmail(p: {
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:20px 20px 12px;">
       <p style="margin:0 0 14px;font-size:11px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em;font-weight:600;">Informations client &amp; rendez-vous</p>
       <table style="width:100%;border-collapse:collapse;">
-        ${detailRow('Nom', p.customerName)}
-        ${detailRow('E-mail', p.customerEmail)}
-        ${detailRow('Téléphone', p.customerPhone)}
-        ${detailRow('Service', p.serviceName, true)}
+        ${detailRow('Nom', escHtml(p.customerName))}
+        ${detailRow('E-mail', escHtml(p.customerEmail))}
+        ${detailRow('Téléphone', escHtml(p.customerPhone))}
+        ${detailRow('Service', escHtml(p.serviceName), true)}
         ${detailRow('Date', p.formattedDate)}
         ${detailRow('Heure', p.formattedTime)}
         ${notesRow}

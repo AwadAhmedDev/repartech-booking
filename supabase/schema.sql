@@ -69,6 +69,18 @@ create table if not exists public.admin_users (
 );
 
 -- =========================================================
+-- INDEXES
+-- =========================================================
+
+-- Prevents two non-cancelled appointments from sharing the same date and
+-- start time, catching concurrent double-bookings at the database level.
+-- The application code surfaces a user-friendly "slot taken" message on
+-- the unique violation error code (23505).
+create unique index if not exists appointments_unique_slot
+  on public.appointments (appointment_date, start_time)
+  where status <> 'cancelled';
+
+-- =========================================================
 -- HELPER FUNCTION — used by RLS policies below
 -- =========================================================
 
@@ -104,10 +116,11 @@ drop policy if exists "services_admin_write" on public.services;
 create policy "services_admin_write" on public.services
   for all using (public.is_admin()) with check (public.is_admin());
 
--- appointments: anyone can INSERT (booking form), no public read, admins can read/update/delete
+-- appointments: public can INSERT only with status = 'pending' (booking form),
+--   no public read, admins can read/update/delete
 drop policy if exists "appointments_public_insert" on public.appointments;
 create policy "appointments_public_insert" on public.appointments
-  for insert with check (true);
+  for insert with check (status = 'pending');
 
 drop policy if exists "appointments_admin_select" on public.appointments;
 create policy "appointments_admin_select" on public.appointments
