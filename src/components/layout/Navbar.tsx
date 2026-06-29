@@ -23,9 +23,9 @@ export function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       {/* Announcement bar — desktop only */}
-      <div className="hidden bg-slate-900 lg:block">
+      <div className="hidden bg-blue-700 lg:block">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2.5 lg:px-10">
-          <div className="flex items-center gap-6 text-xs text-white/55">
+          <div className="flex items-center gap-6 text-xs text-white/90">
             <span className="flex items-center gap-1.5">
               <Clock className="h-3 w-3" />
               Lun – Sam, 9h – 18h
@@ -40,7 +40,7 @@ export function Navbar() {
           {settings?.business_phone && (
             <a
               href={`tel:${settings.business_phone}`}
-              className="flex items-center gap-1.5 text-xs text-white/55 transition-colors hover:text-white"
+              className="flex items-center gap-1.5 text-xs text-white transition-colors hover:text-white/70"
             >
               <Phone className="h-3 w-3" />
               {settings.business_phone}
