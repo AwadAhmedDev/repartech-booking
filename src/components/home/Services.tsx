@@ -71,51 +71,49 @@ export function Services({ onSelectService }: { onSelectService: (serviceId: str
 
         {!loading && !error && services.length > 0 && (
           <>
-            <div className="mt-10 divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200">
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {services.map((service) => {
                 const Icon = getServiceIcon(service.name)
                 return (
                   <div
                     key={service.id}
-                    className="group flex flex-col gap-4 bg-white px-8 py-7 transition-colors hover:bg-slate-50 sm:flex-row sm:items-center sm:gap-8"
+                    className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-7 transition-shadow hover:shadow-md"
                   >
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600 transition-colors group-hover:bg-blue-100 group-hover:text-blue-700">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-600 transition-colors group-hover:bg-blue-100 group-hover:text-blue-700">
                       <Icon className="h-5 w-5" strokeWidth={1.75} />
                     </span>
 
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-display text-base font-semibold text-slate-900">
-                        {service.name}
-                      </h3>
-                      <p className="mt-1 max-w-xl text-sm leading-relaxed text-slate-500">
-                        {service.description}
-                      </p>
-                    </div>
+                    <h3 className="mt-5 font-display text-base font-semibold text-slate-900">
+                      {service.name}
+                    </h3>
+                    <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-500">
+                      {service.description}
+                    </p>
 
-                    <div className="hidden shrink-0 text-right sm:block">
-                      <p className="font-display text-xl font-bold text-slate-900">
-                        {formatCurrency(service.price)}
-                      </p>
-                      <p className="mt-0.5 text-xs text-slate-500">
-                        {formatDuration(service.duration_minutes)}
-                      </p>
+                    <div className="mt-6 flex items-end justify-between border-t border-slate-100 pt-5">
+                      <div>
+                        <p className="font-display text-xl font-bold text-slate-900">
+                          {formatCurrency(service.price)}
+                        </p>
+                        <p className="mt-0.5 text-xs text-slate-400">
+                          {formatDuration(service.duration_minutes)}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => onSelectService(service.id)}
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-600"
+                      >
+                        Réserver
+                        <ArrowRight className="h-4 w-4" />
+                      </button>
                     </div>
-
-                    <button
-                      type="button"
-                      onClick={() => onSelectService(service.id)}
-                      className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-600 sm:self-center"
-                    >
-                      <span className="sm:hidden">{formatCurrency(service.price)} · </span>
-                      Réserver
-                      <ArrowRight className="h-4 w-4" />
-                    </button>
                   </div>
                 )
               })}
             </div>
 
-            <p className="mt-6 text-center text-sm text-slate-500">
+            <p className="mt-8 text-center text-sm text-slate-500">
               <CheckCircle2 className="mr-1.5 inline h-4 w-4 align-text-bottom text-blue-600" />
               Toutes les réparations incluent un diagnostic offert et un devis sans engagement.
             </p>
