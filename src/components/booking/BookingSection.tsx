@@ -116,9 +116,6 @@ export function BookingSection({
     return options
   }, [businessHours, blockedDates])
 
-  // Recalculates whenever the selected service or date changes. Always clears
-  // the previously selected time slot first, since a slot from a different
-  // service/date is no longer valid.
   useEffect(() => {
     setSelectedSlot(null)
     setSlotConflict(false)
@@ -132,8 +129,6 @@ export function BookingSection({
     setLoadingSlots(true)
     const dateKey = toDateKey(selectedDate)
 
-    // Fetch all appointments on this date — not just those for the selected
-    // service — so a single technician is never double-booked across services.
     fetchAppointmentsForDateRange(dateKey, dateKey)
       .then((appointments) => {
         if (!isMounted) return
@@ -186,9 +181,6 @@ export function BookingSection({
     setSubmitting(true)
     setSubmitError(null)
 
-    // Derive the DB-bound strings from the slot's real Date objects — never
-    // from hand-built date strings — so they always stay in sync with what
-    // was actually offered and selected.
     const appointmentDate = toDateKey(selectedSlot.start)
     const startTime = toTimeKey(selectedSlot.start)
     const endTime = toTimeKey(selectedSlot.end)
@@ -211,8 +203,6 @@ export function BookingSection({
         status: 'pending',
       })
 
-      // Fire email notifications without blocking — a delivery failure must
-      // never prevent the booking from being shown as confirmed to the user.
       sendBookingEmails({
         customerName: trimmedName,
         customerEmail: trimmedEmail,
@@ -237,8 +227,6 @@ export function BookingSection({
       setStep('success')
     } catch (err) {
       if (err instanceof SlotConflictError) {
-        // The slot was claimed by another booking between the user selecting it
-        // and submitting — send them back to pick a different time.
         setSelectedSlot(null)
         setSlotConflict(true)
         setStep('datetime')
@@ -266,22 +254,22 @@ export function BookingSection({
   const canContinueFromDateTime = !!selectedSlot
 
   return (
-    <section id="booking" className="relative bg-charcoal-900 py-24 lg:py-32">
+    <section id="booking" className="relative bg-slate-50 py-24 lg:py-32">
       <div className="mx-auto max-w-4xl px-6 lg:px-10">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">
             Réserver un Rendez-vous
           </span>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             Demandez de l'Aide en Moins d'une Minute
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-white/55">
+          <p className="mt-4 text-base leading-relaxed text-slate-600">
             Sélectionnez un service, choisissez un horaire qui vous convient, et nous nous occupons du
             reste.
           </p>
         </div>
 
-        <div className="mt-12 rounded-3xl border border-white/10 bg-gradient-to-b from-charcoal-800 to-charcoal-900 p-6 shadow-premium sm:p-10">
+        <div className="mt-12 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10">
           {step !== 'success' && (
             <div className="mb-9 flex items-center justify-center gap-3">
               {STEP_LABELS.map((s, idx) => {
@@ -294,19 +282,23 @@ export function BookingSection({
                       <span
                         className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold ${
                           isCurrent
-                            ? 'bg-gradient-to-br from-electric-500 to-cyan-400 text-white'
+                            ? 'bg-blue-600 text-white'
                             : isDone
-                              ? 'bg-cyan-400/20 text-cyan-300'
-                              : 'bg-white/5 text-white/40'
+                              ? 'bg-blue-100 text-blue-600'
+                              : 'bg-slate-100 text-slate-400'
                         }`}
                       >
                         {idx + 1}
                       </span>
-                      <span className={`hidden text-xs font-medium sm:inline ${isCurrent ? 'text-white' : 'text-white/40'}`}>
+                      <span
+                        className={`hidden text-xs font-medium sm:inline ${
+                          isCurrent ? 'text-slate-900' : 'text-slate-400'
+                        }`}
+                      >
                         {s.label}
                       </span>
                     </div>
-                    {idx < STEP_LABELS.length - 1 && <span className="h-px w-8 bg-white/10" />}
+                    {idx < STEP_LABELS.length - 1 && <span className="h-px w-8 bg-slate-200" />}
                   </div>
                 )
               })}
@@ -314,19 +306,19 @@ export function BookingSection({
           )}
 
           {loadingConfig && (
-            <div className="flex items-center justify-center gap-2 py-16 text-white/50">
+            <div className="flex items-center justify-center gap-2 py-16 text-slate-500">
               <Loader2 className="h-5 w-5 animate-spin" />
               Chargement du système de réservation…
             </div>
           )}
 
           {configError && (
-            <div className="flex flex-col items-center gap-3 rounded-xl border border-danger-500/30 bg-danger-500/10 px-6 py-4 text-center text-sm text-danger-500">
+            <div className="flex flex-col items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-6 py-4 text-center text-sm text-red-600">
               <p>{configError}</p>
               <button
                 type="button"
                 onClick={() => loadConfig(true)}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-danger-500/30 px-3 py-1.5 text-xs font-semibold hover:bg-danger-500/10"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-red-300 px-3 py-1.5 text-xs font-semibold hover:bg-red-100"
               >
                 <RotateCw className="h-3.5 w-3.5" />
                 Réessayer
@@ -337,12 +329,17 @@ export function BookingSection({
           {!loadingConfig && !configError && (
             <>
               {step === 'service' && (
-                <ServiceStep services={services} selectedServiceId={selectedServiceId} onSelect={setSelectedServiceId} />
+                <ServiceStep
+                  services={services}
+                  selectedServiceId={selectedServiceId}
+                  onSelect={setSelectedServiceId}
+                />
               )}
 
               {step === 'datetime' && slotConflict && (
                 <div className="mb-5 rounded-xl border border-warning-500/30 bg-warning-500/10 px-5 py-4 text-sm text-warning-500">
-                  Ce créneau vient d'être réservé par quelqu'un d'autre. Veuillez choisir un autre horaire.
+                  Ce créneau vient d'être réservé par quelqu'un d'autre. Veuillez choisir un autre
+                  horaire.
                 </div>
               )}
 
@@ -371,12 +368,12 @@ export function BookingSection({
               )}
 
               {step !== 'success' && (
-                <div className="mt-9 flex items-center justify-between border-t border-white/10 pt-6">
+                <div className="mt-9 flex items-center justify-between border-t border-slate-200 pt-6">
                   <button
                     type="button"
                     onClick={() => setStep(step === 'details' ? 'datetime' : 'service')}
                     disabled={step === 'service'}
-                    className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-white/60 transition-colors hover:text-white disabled:opacity-0"
+                    className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-0"
                   >
                     <ArrowLeft className="h-4 w-4" />
                     Retour
@@ -387,7 +384,7 @@ export function BookingSection({
                       type="button"
                       disabled={!selectedServiceId}
                       onClick={() => setStep('datetime')}
-                      className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-electric-500 to-cyan-400 px-6 py-2.5 text-sm font-semibold text-white shadow-glow transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40"
+                      className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       Continuer
                       <ArrowRight className="h-4 w-4" />
@@ -399,7 +396,7 @@ export function BookingSection({
                       type="button"
                       disabled={!canContinueFromDateTime}
                       onClick={() => setStep('details')}
-                      className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-electric-500 to-cyan-400 px-6 py-2.5 text-sm font-semibold text-white shadow-glow transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40"
+                      className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       Continuer
                       <ArrowRight className="h-4 w-4" />
@@ -411,7 +408,7 @@ export function BookingSection({
                       type="button"
                       disabled={submitting}
                       onClick={handleSubmit}
-                      className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-electric-500 to-cyan-400 px-6 py-2.5 text-sm font-semibold text-white shadow-glow transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                       Envoyer la Demande

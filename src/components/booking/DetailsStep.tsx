@@ -18,8 +18,10 @@ export function DetailsStep({
 }) {
   return (
     <div>
-      <h3 className="font-display text-xl font-semibold text-white">Vos Coordonnées</h3>
-      <p className="mt-1.5 text-sm text-white/50">Indiquez-nous comment vous contacter et décrivez le problème.</p>
+      <h3 className="font-display text-xl font-semibold text-slate-900">Vos Coordonnées</h3>
+      <p className="mt-1.5 text-sm text-slate-500">
+        Indiquez-nous comment vous contacter et décrivez le problème.
+      </p>
 
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
         <Field label="Nom Complet" error={errors.name}>
@@ -79,7 +81,7 @@ function Field({
 }) {
   return (
     <label className={`flex flex-col gap-1.5 ${full ? 'sm:col-span-2' : ''}`}>
-      <span className="text-xs font-medium text-white/60">{label}</span>
+      <span className="text-xs font-medium text-slate-700">{label}</span>
       {children}
       {error && <span className="text-xs text-danger-500">{error}</span>}
     </label>
@@ -87,7 +89,7 @@ function Field({
 }
 
 function inputClass(hasError: boolean) {
-  return `rounded-lg border bg-white/[0.04] px-3.5 py-2.5 text-sm text-white placeholder:text-white/30 outline-none transition-colors focus:border-cyan-400/60 focus:bg-white/[0.06] ${
-    hasError ? 'border-danger-500/60' : 'border-white/10'
+  return `rounded-lg border bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 ${
+    hasError ? 'border-red-400' : 'border-slate-300'
   }`
 }

@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { Hero } from '../components/home/Hero'
+import { TrustBar } from '../components/home/TrustBar'
 import { Services } from '../components/home/Services'
 import { WhyChooseUs } from '../components/home/WhyChooseUs'
 import { About } from '../components/home/About'
+import { ProcessSection } from '../components/home/ProcessSection'
+import { Testimonials } from '../components/home/Testimonials'
 import { BookingSection } from '../components/booking/BookingSection'
 
 export function HomePage() {
@@ -18,9 +21,12 @@ export function HomePage() {
   return (
     <>
       <Hero />
+      <TrustBar />
       <Services onSelectService={handleSelectService} />
       <WhyChooseUs />
       <About />
+      <ProcessSection />
+      <Testimonials />
       <BookingSection preselectedServiceId={preselectedServiceId} selectionToken={selectionToken} />
     </>
   )
