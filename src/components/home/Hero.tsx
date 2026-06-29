@@ -1,4 +1,4 @@
-import { ArrowRight, CheckCircle2, Clock, MapPin, Star } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Clock, MapPin } from 'lucide-react'
 import { images } from '../../data/images'
 
 const GUARANTEES = [
@@ -16,21 +16,7 @@ export function Hero() {
 
           {/* Left — content */}
           <div className="flex flex-col justify-center pb-16 pt-32 lg:py-0 lg:pt-0">
-            {/* Social proof */}
-            <div className="flex items-center gap-3">
-              <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <span className="text-sm text-slate-600">
-                <strong className="font-semibold text-slate-900">4.9 / 5</strong>
-                <span className="mx-2 text-slate-300">·</span>
-                200+ clients satisfaits
-              </span>
-            </div>
-
-            <h1 className="mt-7 font-display text-5xl font-bold leading-[1.04] tracking-tight text-slate-900 sm:text-6xl lg:text-7xl">
+            <h1 className="font-display text-5xl font-bold leading-[1.04] tracking-tight text-slate-900 sm:text-6xl lg:text-7xl">
               Réparation
               <br />
               Informatique
