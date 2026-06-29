@@ -50,19 +50,13 @@ export function Navbar() {
       </div>
 
       {/* Main nav */}
-      <div
-        className={`transition-all duration-200 ${
-          scrolled
-            ? 'border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur-md'
-            : 'bg-white/90 backdrop-blur-sm'
-        }`}
-      >
+      <div className={`bg-slate-900 transition-shadow duration-200 ${scrolled ? 'shadow-lg' : ''}`}>
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
           <Link to="/" className="flex items-center gap-3">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
               <span className="font-display text-[11px] font-bold tracking-tight text-white">RT</span>
             </span>
-            <span className="font-display text-base font-semibold tracking-tight text-slate-900">
+            <span className="font-display text-base font-semibold tracking-tight text-white">
               {settings?.business_name ?? 'RéparTech'}
             </span>
           </Link>
@@ -72,7 +66,7 @@ export function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
+                className="text-sm font-medium text-white/60 transition-colors hover:text-white"
               >
                 {link.label}
               </a>
@@ -94,21 +88,21 @@ export function Navbar() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label="Basculer le menu"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition-colors hover:bg-slate-50 lg:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-white/60 transition-colors hover:bg-white/10 hover:text-white lg:hidden"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </nav>
 
         {open && (
-          <div id="mobile-menu" className="border-t border-slate-100 bg-white px-6 pb-6 lg:hidden">
+          <div id="mobile-menu" className="border-t border-white/10 bg-slate-900 px-6 pb-6 lg:hidden">
             <div className="flex flex-col gap-1 pt-4">
               {NAV_LINKS.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-base font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                  className="rounded-lg px-3 py-2.5 text-base font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                 >
                   {link.label}
                 </a>
@@ -116,7 +110,7 @@ export function Navbar() {
               {settings?.business_phone && (
                 <a
                   href={`tel:${settings.business_phone}`}
-                  className="mt-1 flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-slate-600 hover:bg-slate-50"
+                  className="mt-1 flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-white/50 hover:bg-white/10 hover:text-white"
                 >
                   <Phone className="h-4 w-4" />
                   {settings.business_phone}
