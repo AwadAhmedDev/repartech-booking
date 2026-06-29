@@ -7,6 +7,7 @@ import {
   fetchBlockedDates,
   fetchBusinessHours,
   fetchBusinessSettings,
+  sendBookingEmails,
 } from '../../lib/api'
 import { getAvailableSlots, toDateKey, toTimeKey, type TimeSlot } from '../../lib/availability'
 import type { BlockedDate, BusinessHours, BusinessSettings, Service } from '../../types/database'
@@ -127,7 +128,9 @@ export function BookingSection({
     setLoadingSlots(true)
     const dateKey = toDateKey(selectedDate)
 
-    fetchAppointmentsForDateRange(selectedService.id, dateKey, dateKey)
+    // Fetch all appointments on this date — not just those for the selected
+    // service — so a single technician is never double-booked across services.
+    fetchAppointmentsForDateRange(dateKey, dateKey)
       .then((appointments) => {
         if (!isMounted) return
         const available = getAvailableSlots({
@@ -187,32 +190,50 @@ export function BookingSection({
     const endTime = toTimeKey(selectedSlot.end)
 
     try {
+      const trimmedName = formValues.name.trim()
+      const trimmedEmail = formValues.email.trim()
+      const trimmedPhone = formValues.phone.trim()
+      const trimmedNotes = formValues.notes.trim() || null
+
       await createAppointment({
         service_id: selectedService.id,
-        full_name: formValues.name.trim(),
-        email: formValues.email.trim(),
-        phone: formValues.phone.trim(),
-        notes: formValues.notes.trim() || null,
+        full_name: trimmedName,
+        email: trimmedEmail,
+        phone: trimmedPhone,
+        notes: trimmedNotes,
         appointment_date: appointmentDate,
         start_time: startTime,
         end_time: endTime,
         status: 'pending',
       })
 
+      // Fire email notifications without blocking — a delivery failure must
+      // never prevent the booking from being shown as confirmed to the user.
+      sendBookingEmails({
+        customerName: trimmedName,
+        customerEmail: trimmedEmail,
+        customerPhone: trimmedPhone,
+        serviceName: selectedService.name,
+        appointmentDate,
+        startTime,
+        endTime,
+        notes: trimmedNotes,
+      }).catch((err) => console.error('Booking email notification failed:', err))
+
       setSummary({
         serviceName: selectedService.name,
         date: appointmentDate,
         startTime,
         endTime,
-        name: formValues.name.trim(),
-        email: formValues.email.trim(),
-        phone: formValues.phone.trim(),
+        name: trimmedName,
+        email: trimmedEmail,
+        phone: trimmedPhone,
         notes: formValues.notes.trim(),
       })
       setStep('success')
     } catch (err) {
       console.error('Failed to submit appointment request:', err)
-      setSubmitError('Nous n\'avons pas pu envoyer votre demande. Veuillez réessayer.')
+      setSubmitError("Nous n'avons pas pu envoyer votre demande. Veuillez réessayer.")
     } finally {
       setSubmitting(false)
     }

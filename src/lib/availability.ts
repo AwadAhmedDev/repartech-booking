@@ -52,6 +52,12 @@ function formatLabel(date: Date): string {
  * availability rule: business hours, blocked dates, existing overlapping
  * non-cancelled appointments, and the minimum booking notice window.
  *
+ * Single-technician assumption: `existingAppointments` must contain ALL
+ * appointments for the date (across every service), not only those for the
+ * service being booked. Any booked time block occupies the technician's full
+ * schedule and must block all overlapping candidate slots regardless of which
+ * service originally claimed it.
+ *
  * Returns an empty array (never throws) if inputs are missing or invalid —
  * callers should render a "no availability" fallback on an empty result.
  */

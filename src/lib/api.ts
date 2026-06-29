@@ -53,15 +53,17 @@ export async function fetchBlockedDates(): Promise<BlockedDate[]> {
   return data ?? []
 }
 
+// Returns every non-cancelled appointment that falls within the date range,
+// across all services. The availability engine assumes a single-technician
+// schedule — any booked slot blocks the entire shop regardless of which
+// service it belongs to.
 export async function fetchAppointmentsForDateRange(
-  serviceId: string,
   startDate: string,
   endDate: string,
 ): Promise<{ appointment_date: string; start_time: string; end_time: string; status: AppointmentStatus }[]> {
   const { data, error } = await supabase
     .from('appointments')
     .select('appointment_date, start_time, end_time, status')
-    .eq('service_id', serviceId)
     .neq('status', 'cancelled')
     .gte('appointment_date', startDate)
     .lte('appointment_date', endDate)
@@ -75,6 +77,44 @@ export async function fetchAppointmentsForDateRange(
 export async function createAppointment(input: NewAppointmentInput): Promise<void> {
   const { error } = await supabase.from('appointments').insert(input)
   if (error) throw error
+}
+
+// ---------- Email notifications ----------
+
+export interface BookingEmailPayload {
+  customerName: string
+  customerEmail: string
+  customerPhone: string
+  serviceName: string
+  appointmentDate: string
+  startTime: string
+  endTime: string
+  notes: string | null
+}
+
+/**
+ * Calls the Supabase Edge Function that dispatches booking confirmation emails.
+ * Non-blocking by design — callers should fire-and-forget after a successful
+ * createAppointment so that an email failure never rolls back a confirmed booking.
+ */
+export async function sendBookingEmails(payload: BookingEmailPayload): Promise<void> {
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+  const res = await fetch(`${supabaseUrl}/functions/v1/send-booking-confirmation`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${supabaseAnonKey}`,
+      apikey: supabaseAnonKey,
+    },
+    body: JSON.stringify(payload),
+  })
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => '')
+    throw new Error(`Email notification failed (${res.status}): ${body}`)
+  }
 }
 
 // ---------- Admin: appointments ----------

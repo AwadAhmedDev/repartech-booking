@@ -4,13 +4,15 @@ import { Cpu, Loader2, Lock, Mail } from 'lucide-react'
 import { useAdminAuth } from '../../contexts/AdminAuthContext'
 
 export function AdminLoginPage() {
-  const { session, isAdmin, loading, signIn } = useAdminAuth()
+  const { session, loading, signIn } = useAdminAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  if (!loading && session && isAdmin) {
+  // If any session exists, send to /admin — AdminLayout handles both
+  // the authorised dashboard and the "access restricted" screen.
+  if (!loading && session) {
     return <Navigate to="/admin" replace />
   }
 

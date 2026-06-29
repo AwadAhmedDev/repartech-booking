@@ -41,8 +41,8 @@ export function ServiceFormDialog({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 py-8 backdrop-blur-sm">
-      <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-navy-900 p-6 shadow-premium sm:p-7">
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 px-0 py-0 backdrop-blur-sm sm:items-center sm:px-4 sm:py-8">
+      <div className="max-h-[92dvh] w-full overflow-y-auto rounded-t-2xl border border-white/10 bg-navy-900 p-6 shadow-premium sm:max-h-[90vh] sm:max-w-lg sm:rounded-2xl sm:p-7">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-lg font-semibold text-white">
             {initial ? 'Modifier le Service' : 'Ajouter un Service'}
