@@ -1,7 +1,12 @@
+import type { ReactNode } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { PublicLayout } from './components/layout/PublicLayout'
 import { HomePage } from './pages/HomePage'
+import { MentionsLegalesPage } from './pages/legal/MentionsLegalesPage'
+import { PolitiqueConfidentialitePage } from './pages/legal/PolitiqueConfidentialitePage'
+import { CGUPage } from './pages/legal/CGUPage'
+import { CGVPage } from './pages/legal/CGVPage'
 import { AdminAuthProvider } from './contexts/AdminAuthContext'
 import { AdminLoginPage } from './pages/admin/AdminLoginPage'
 import { AdminLayout } from './components/admin/AdminLayout'
@@ -12,19 +17,22 @@ import { BusinessHoursPage } from './pages/admin/BusinessHoursPage'
 import { BlockedDatesPage } from './pages/admin/BlockedDatesPage'
 import { BusinessSettingsPage } from './pages/admin/BusinessSettingsPage'
 
+const withPublicLayout = (page: ReactNode) => (
+  <PublicLayout>{page}</PublicLayout>
+)
+
 function App() {
   return (
     <ErrorBoundary>
       <AdminAuthProvider>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <PublicLayout>
-                <HomePage />
-              </PublicLayout>
-            }
-          />
+          <Route path="/" element={withPublicLayout(<HomePage />)} />
+
+          {/* Legal pages */}
+          <Route path="/mentions-legales" element={withPublicLayout(<MentionsLegalesPage />)} />
+          <Route path="/confidentialite" element={withPublicLayout(<PolitiqueConfidentialitePage />)} />
+          <Route path="/cgu" element={withPublicLayout(<CGUPage />)} />
+          <Route path="/cgv" element={withPublicLayout(<CGVPage />)} />
 
           <Route path="/admin/login" element={<AdminLoginPage />} />
 

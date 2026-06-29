@@ -1,4 +1,5 @@
 import { Mail, MapPin, Phone } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useBusinessSettings } from '../../contexts/BusinessSettingsContext'
 
 const QUICK_LINKS = [
@@ -125,9 +126,14 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
             <p>&copy; {year} {settings?.business_name ?? 'RéparTech'}. Tous droits réservés.</p>
-            <p>Réparation Informatique &amp; Support IT pour Entreprises</p>
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
+              <Link to="/mentions-legales" className="transition-colors hover:text-white">Mentions Légales</Link>
+              <Link to="/confidentialite" className="transition-colors hover:text-white">Politique de Confidentialité</Link>
+              <Link to="/cgu" className="transition-colors hover:text-white">CGU</Link>
+              <Link to="/cgv" className="transition-colors hover:text-white">CGV</Link>
+            </div>
           </div>
         </div>
       </div>
