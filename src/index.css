@@ -50,8 +50,20 @@
 }
 
 @layer base {
+  /* Hauteur du header fixe (barre d'annonce + nav) — offset global */
+  :root {
+    --nav-h: 68px;
+  }
+
+  @media (min-width: 1024px) {
+    :root {
+      --nav-h: 108px;
+    }
+  }
+
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: var(--nav-h);
   }
 
   body {
