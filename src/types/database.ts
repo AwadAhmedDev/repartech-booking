@@ -6,6 +6,7 @@ export interface Service {
   description: string
   duration_minutes: number
   price: number
+  price_max: number | null
   is_active: boolean
   created_at: string
 }

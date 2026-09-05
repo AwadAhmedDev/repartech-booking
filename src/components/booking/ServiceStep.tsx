@@ -1,5 +1,5 @@
 import { Check } from 'lucide-react'
-import { formatCurrency, formatDuration } from '../../lib/format'
+import { formatDuration, formatPriceRange } from '../../lib/format'
 import { getServiceIcon } from '../../lib/iconMap'
 import type { Service } from '../../types/database'
 
@@ -48,7 +48,7 @@ export function ServiceStep({
               </span>
               <span className="mt-3 text-sm font-semibold text-slate-900">{service.name}</span>
               <span className="mt-2 flex items-center gap-2 text-xs text-slate-500">
-                <span>{formatCurrency(service.price)}</span>
+                <span>{formatPriceRange(service.price, service.price_max)}</span>
                 <span aria-hidden>&middot;</span>
                 <span>{formatDuration(service.duration_minutes)}</span>
               </span>

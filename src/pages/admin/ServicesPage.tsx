@@ -7,7 +7,7 @@ import {
   updateService,
   type ServiceInput,
 } from '../../lib/api'
-import { formatCurrency, formatDuration } from '../../lib/format'
+import { formatDuration, formatPriceRange } from '../../lib/format'
 import { getServiceIcon } from '../../lib/iconMap'
 import { PageHeader } from '../../components/admin/PageHeader'
 import { ServiceFormDialog } from '../../components/admin/ServiceFormDialog'
@@ -145,7 +145,7 @@ export function ServicesPage() {
                 <p className="mt-1.5 line-clamp-2 text-xs text-white/50">{service.description}</p>
 
                 <div className="mt-4 flex items-center justify-between text-xs text-white/45">
-                  <span>{formatCurrency(service.price)}</span>
+                  <span>{formatPriceRange(service.price, service.price_max)}</span>
                   <span>{formatDuration(service.duration_minutes)}</span>
                 </div>
 

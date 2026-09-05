@@ -16,6 +16,7 @@ export function ServiceFormDialog({
   const [description, setDescription] = useState(initial?.description ?? "");
   const [duration, setDuration] = useState(initial?.duration_minutes ?? 60);
   const [price, setPrice] = useState(initial?.price ?? 0);
+  const [priceMax, setPriceMax] = useState(initial?.price_max ?? 0);
   const [isActive, setIsActive] = useState(initial?.is_active ?? true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,6 +31,7 @@ export function ServiceFormDialog({
         description: description.trim(),
         duration_minutes: duration,
         price,
+        price_max: priceMax > price ? priceMax : null,
         is_active: isActive,
       });
     } catch (err) {
@@ -83,7 +85,7 @@ export function ServiceFormDialog({
             />
           </label>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <label className="flex flex-col gap-1.5">
               <span className="text-xs font-medium text-white/60">
                 Durée (minutes)
@@ -101,7 +103,7 @@ export function ServiceFormDialog({
 
             <label className="flex flex-col gap-1.5">
               <span className="text-xs font-medium text-white/60">
-                Prix (USD)
+                Prix minimum (€)
               </span>
               <input
                 required
@@ -111,6 +113,21 @@ export function ServiceFormDialog({
                 value={price}
                 onChange={(e) => setPrice(Number(e.target.value))}
                 className="rounded-lg border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm text-white outline-none focus:border-cyan-400/60"
+              />
+            </label>
+
+            <label className="flex flex-col gap-1.5">
+              <span className="text-xs font-medium text-white/60">
+                Prix maximum (€)
+              </span>
+              <input
+                type="number"
+                min={0}
+                step={0.01}
+                value={priceMax}
+                onChange={(e) => setPriceMax(Number(e.target.value))}
+                placeholder="Laisser à 0 si prix fixe"
+                className="rounded-lg border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm text-white outline-none placeholder:text-white/30 focus:border-cyan-400/60"
               />
             </label>
           </div>

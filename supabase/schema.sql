@@ -17,6 +17,7 @@ create table if not exists public.services (
   description text not null default '',
   duration_minutes integer not null default 60,
   price numeric(10, 2) not null default 0,
+  price_max numeric(10, 2),
   is_active boolean not null default true,
   created_at timestamptz not null default now()
 );
@@ -185,12 +186,17 @@ insert into public.business_settings (business_name, business_email, business_ph
 select 'RepaTek', 'repatekcontact@gmail.com', '+33 7 49 87 16 52', '1 avenue de Saintonge, 91940 Les Ulis', 30, 4
 where not exists (select 1 from public.business_settings);
 
-insert into public.services (name, description, duration_minutes, price, is_active)
+insert into public.services (name, description, duration_minutes, price, price_max, is_active)
 values
-  ('Service de Diagnostic Informatique', 'Diagnostic complet du matériel et des logiciels pour identifier précisément le problème avant toute réparation.', 45, 49.00, true),
-  ('Suppression de Virus et Logiciels Malveillants', 'Analyse approfondie du système et suppression des virus, logiciels espions, rançongiciels et autres logiciels malveillants.', 60, 89.00, true),
-  ('Service de Réparation d''Ordinateurs Portables', 'Réparation d''écran, de clavier, de batterie, de charnière et de carte mère pour toutes les grandes marques d''ordinateurs portables.', 90, 129.00, true),
-  ('Réparation d''Ordinateurs de Bureau', 'Réparation au niveau des composants : alimentations, cartes graphiques, cartes mères et stockage.', 90, 119.00, true),
-  ('Consultation de Récupération de Données', 'Évaluation professionnelle et plan de récupération pour les données perdues, corrompues ou inaccessibles.', 60, 99.00, true),
-  ('Session de Support IT pour Entreprises', 'Session de support IT sur site ou à distance pour les réseaux, serveurs et postes de travail professionnels.', 120, 199.00, true)
+  ('Diagnostic système & panne', 'Analyse complète du matériel et des logiciels pour identifier la cause des ralentissements, pannes, écrans bleus et erreurs système. Le montant du diagnostic est déduit du prix de la réparation si vous l''acceptez.', 45, 30.00, 50.00, true),
+  ('Optimisation & nettoyage système', 'Suppression des fichiers inutiles, désactivation des programmes au démarrage, nettoyage du registre et réglages pour optimiser la vitesse.', 60, 50.00, 70.00, true),
+  ('Maintenance préventive', 'Dépoussiérage interne complet, remplacement de la pâte thermique, tests de charge et mise à jour des pilotes pour éviter la surchauffe et prolonger la durée de vie du matériel.', 90, 60.00, 90.00, true),
+  ('Désinfection & suppression de virus', 'Élimination complète des malwares, spywares, ransomwares et virus, suivie du renforcement de la sécurité et du paramétrage d''un antivirus.', 75, 50.00, 80.00, true),
+  ('Récupération de données & Sauvegarde', 'Extraction de vos fichiers importants depuis un disque dur défaillant ou un système bloqué, et mise en place d''une solution de sauvegarde automatique.', 120, 60.00, 120.00, true),
+  ('Réinstallation de système (Windows / macOS)', 'Installation propre du système d''exploitation, configuration des pilotes, réinstallation de vos logiciels et transfert complet de vos données.', 150, 90.00, 130.00, true),
+  ('Réparation & remplacement de composants', 'Changement des pièces défectueuses ou obsolètes : alimentation, mémoire RAM, carte graphique, carte mère, écran ou batterie d''ordinateur portable. Prix hors pièces.', 60, 40.00, 70.00, true),
+  ('Passage au SSD & Clonage', 'Remplacement de votre ancien disque dur lent par un disque SSD rapide, avec clonage à l''identique de votre système sans perte de données. Prix hors SSD.', 90, 60.00, 90.00, true),
+  ('Assemblage PC sur mesure', 'Conseil sur le choix des composants, montage complet, rangement des câbles, paramétrage du BIOS et installation de votre PC (bureau, gaming ou création).', 180, 90.00, 150.00, true),
+  ('Assistance & Dépannage à distance', 'Intervention rapide par prise en main à distance pour résoudre les bugs logiciels, configurer vos e-mails ou débloquer une situation simple. Tarif par tranche de 30 minutes.', 30, 25.00, 40.00, true),
+  ('Configuration réseau & Wi-Fi', 'Installation de routeurs, répéteurs Wi-Fi, imprimantes en réseau et configuration de partages de fichiers sécurisés (NAS).', 90, 50.00, 80.00, true)
 on conflict do nothing;

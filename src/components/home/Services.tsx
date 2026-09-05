@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight, CheckCircle2, Loader2, RotateCw } from 'lucide-react'
 import { fetchActiveServices } from '../../lib/api'
-import { formatCurrency, formatDuration } from '../../lib/format'
+import { formatDuration, formatPriceRange } from '../../lib/format'
 import { getServiceIcon } from '../../lib/iconMap'
 import type { Service } from '../../types/database'
 
@@ -92,8 +92,8 @@ export function Services({ onSelectService }: { onSelectService: (serviceId: str
 
                     <div className="mt-6 flex items-end justify-between border-t border-slate-100 pt-5">
                       <div>
-                        <p className="font-display text-xl font-bold text-slate-900">
-                          {formatCurrency(service.price)}
+                        <p className="font-display text-lg font-bold text-slate-900">
+                          {formatPriceRange(service.price, service.price_max)}
                         </p>
                         <p className="mt-0.5 text-xs text-slate-400">
                           {formatDuration(service.duration_minutes)}

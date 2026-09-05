@@ -1,5 +1,11 @@
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'USD' }).format(amount)
+  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount)
+}
+
+/** Displays a service's price range, e.g. "30 € – 50 €". Falls back to a single amount if no max is set. */
+export function formatPriceRange(min: number, max: number | null): string {
+  if (max == null || max <= min) return formatCurrency(min)
+  return `${formatCurrency(min)} – ${formatCurrency(max)}`
 }
 
 export function formatDuration(minutes: number): string {
