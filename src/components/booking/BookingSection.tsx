@@ -191,7 +191,7 @@ export function BookingSection({
       const trimmedPhone = formValues.phone.trim()
       const trimmedNotes = formValues.notes.trim() || null
 
-      await createAppointment({
+      const appointmentId = await createAppointment({
         service_id: selectedService.id,
         full_name: trimmedName,
         email: trimmedEmail,
@@ -199,20 +199,11 @@ export function BookingSection({
         notes: trimmedNotes,
         appointment_date: appointmentDate,
         start_time: startTime,
-        end_time: endTime,
-        status: 'pending',
       })
 
-      sendBookingEmails({
-        customerName: trimmedName,
-        customerEmail: trimmedEmail,
-        customerPhone: trimmedPhone,
-        serviceName: selectedService.name,
-        appointmentDate,
-        startTime,
-        endTime,
-        notes: trimmedNotes,
-      }).catch((err) => console.error('Booking email notification failed:', err))
+      sendBookingEmails(appointmentId).catch((err) =>
+        console.error('Booking email notification failed:', err),
+      )
 
       setSummary({
         serviceName: selectedService.name,
