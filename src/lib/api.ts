@@ -92,34 +92,44 @@ export class SlotConflictError extends Error {
   }
 }
 
-export async function createAppointment(input: NewAppointmentInput): Promise<void> {
-  const { error } = await supabase.from('appointments').insert(input)
+/**
+ * Creates a pending appointment via the book_appointment() RPC instead of a
+ * direct table insert. The server (not the browser) computes end_time from
+ * the service's real duration and enforces business hours, blocked dates,
+ * the booking-notice window, and a per-email rate limit — none of which a
+ * direct insert could check. Returns the new appointment's id.
+ */
+export async function createAppointment(input: NewAppointmentInput): Promise<string> {
+  const { data, error } = await supabase.rpc('book_appointment', {
+    p_service_id: input.service_id,
+    p_full_name: input.full_name,
+    p_email: input.email,
+    p_phone: input.phone,
+    p_notes: input.notes,
+    p_appointment_date: input.appointment_date,
+    p_start_time: input.start_time,
+  })
+
   if (error) {
-    // PostgreSQL unique violation — the slot was taken by a concurrent booking
-    if (error.code === '23505') throw new SlotConflictError()
+    // Unique violation (identical start time) or exclusion violation (overlapping range)
+    if (error.code === '23505' || error.code === '23P01') throw new SlotConflictError()
     throw error
   }
+
+  return data as string
 }
 
 // ---------- Email notifications ----------
 
-export interface BookingEmailPayload {
-  customerName: string
-  customerEmail: string
-  customerPhone: string
-  serviceName: string
-  appointmentDate: string
-  startTime: string
-  endTime: string
-  notes: string | null
-}
-
 /**
  * Calls the Supabase Edge Function that dispatches booking confirmation emails.
+ * Only the appointment id is sent — the function reads the customer/service
+ * data itself from the database, so the email content can no longer be
+ * forged by whoever calls this endpoint.
  * Non-blocking by design — callers should fire-and-forget after a successful
  * createAppointment so that an email failure never rolls back a confirmed booking.
  */
-export async function sendBookingEmails(payload: BookingEmailPayload): Promise<void> {
+export async function sendBookingEmails(appointmentId: string): Promise<void> {
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
   const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
@@ -130,7 +140,7 @@ export async function sendBookingEmails(payload: BookingEmailPayload): Promise<v
       Authorization: `Bearer ${supabaseAnonKey}`,
       apikey: supabaseAnonKey,
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ appointment_id: appointmentId }),
   })
 
   if (!res.ok) {
@@ -139,32 +149,29 @@ export async function sendBookingEmails(payload: BookingEmailPayload): Promise<v
   }
 }
 
-export interface ConfirmedEmailPayload {
-  customerName: string
-  customerEmail: string
-  serviceName: string
-  appointmentDate: string
-  startTime: string
-  endTime: string
-  notes: string | null
-}
-
 /**
  * Sends an "appointment confirmed" email to the client.
- * Called by the admin dashboard when status changes to 'confirmed'.
+ * Called by the admin dashboard when status changes to 'confirmed'. Requires
+ * the caller's own admin session token — the function verifies it server-side
+ * against admin_users before sending anything.
  */
-export async function sendAppointmentConfirmedEmail(payload: ConfirmedEmailPayload): Promise<void> {
+export async function sendAppointmentConfirmedEmail(appointmentId: string): Promise<void> {
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
   const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  if (!session) throw new Error('Confirmation email failed: no active admin session')
 
   const res = await fetch(`${supabaseUrl}/functions/v1/send-appointment-confirmed`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${supabaseAnonKey}`,
+      Authorization: `Bearer ${session.access_token}`,
       apikey: supabaseAnonKey,
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ appointment_id: appointmentId }),
   })
 
   if (!res.ok) {

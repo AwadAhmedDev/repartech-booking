@@ -60,6 +60,8 @@ export interface AdminUser {
   created_at: string
 }
 
+// end_time and status are no longer client inputs — the server computes end_time
+// from the service's duration and always inserts as 'pending' (see book_appointment()).
 export interface NewAppointmentInput {
   service_id: string
   full_name: string
@@ -68,6 +70,4 @@ export interface NewAppointmentInput {
   notes: string | null
   appointment_date: string
   start_time: string
-  end_time: string
-  status: AppointmentStatus
 }
