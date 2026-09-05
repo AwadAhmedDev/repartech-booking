@@ -1,31 +1,39 @@
 // Supabase Edge Function — send booking confirmation emails via Resend.
 // Deploy: supabase functions deploy send-booking-confirmation
 //
+// SECURITY: this function only ever accepts an appointment_id. All customer
+// and service data is read server-side with the service role key — the
+// caller can no longer supply arbitrary names/emails/content to be sent
+// from the business's verified domain.
+//
 // Required Supabase secrets (set with `supabase secrets set KEY=value`):
 //   RESEND_API_KEY            — your Resend API key (https://resend.com)
 //   ADMIN_NOTIFICATION_EMAIL  — address that receives new-booking alerts
 //   FROM_EMAIL                — verified sender address in Resend (e.g. noreply@yourdomain.com)
 //   BUSINESS_NAME             — displayed in email subject / header (default: RéparTech)
+//
+// SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected automatically by
+// the Edge Function runtime — do not set them manually.
+
+import { createClient } from 'jsr:@supabase/supabase-js@2'
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY') ?? ''
 const ADMIN_EMAIL = Deno.env.get('ADMIN_NOTIFICATION_EMAIL') ?? ''
 const FROM_EMAIL = Deno.env.get('FROM_EMAIL') ?? 'noreply@repartech.com'
 const BUSINESS_NAME = Deno.env.get('BUSINESS_NAME') ?? 'RéparTech'
 
+const supabaseAdmin = createClient(
+  Deno.env.get('SUPABASE_URL')!,
+  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+)
+
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-interface BookingPayload {
-  customerName: string
-  customerEmail: string
-  customerPhone: string
-  serviceName: string
-  appointmentDate: string   // YYYY-MM-DD
-  startTime: string         // HH:MM:SS
-  endTime: string           // HH:MM:SS
-  notes: string | null
+interface RequestPayload {
+  appointment_id: string
 }
 
 Deno.serve(async (req: Request): Promise<Response> => {
@@ -40,11 +48,33 @@ Deno.serve(async (req: Request): Promise<Response> => {
       return json({ error: 'Email service not configured' }, 500)
     }
 
-    const payload: BookingPayload = await req.json()
-    const { customerName, customerEmail, customerPhone, serviceName, appointmentDate, startTime, endTime, notes } = payload
+    const { appointment_id }: RequestPayload = await req.json()
+    if (!appointment_id) {
+      return json({ error: 'appointment_id is required' }, 400)
+    }
 
-    const formattedDate = formatDate(appointmentDate)
-    const formattedTime = `${formatTime(startTime)} – ${formatTime(endTime)}`
+    const { data: appointment, error: fetchError } = await supabaseAdmin
+      .from('appointments')
+      .select('full_name, email, phone, notes, appointment_date, start_time, end_time, services(name)')
+      .eq('id', appointment_id)
+      .maybeSingle()
+
+    if (fetchError) {
+      console.error('Failed to fetch appointment:', fetchError)
+      return json({ error: 'Internal error' }, 500)
+    }
+    if (!appointment) {
+      return json({ error: 'Appointment not found' }, 404)
+    }
+
+    const customerName = appointment.full_name
+    const customerEmail = appointment.email
+    const customerPhone = appointment.phone
+    const serviceName = (appointment.services as { name: string } | null)?.name ?? 'Service'
+    const notes = appointment.notes as string | null
+
+    const formattedDate = formatDate(appointment.appointment_date)
+    const formattedTime = `${formatTime(appointment.start_time)} – ${formatTime(appointment.end_time)}`
 
     const tasks: Promise<unknown>[] = [
       sendEmail({

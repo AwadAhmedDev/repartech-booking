@@ -1,28 +1,39 @@
 // Supabase Edge Function — send appointment confirmed email via Resend.
 // Deploy: supabase functions deploy send-appointment-confirmed
 //
+// SECURITY: this is an admin-only action. The caller must send their own
+// Supabase session token in Authorization: Bearer <token>. The function
+// verifies that token and checks admin_users itself — it never trusts the
+// client's word for who is calling, nor for what the email should contain
+// (only appointment_id is accepted; data is read server-side).
+//
 // Required Supabase secrets (same as send-booking-confirmation):
 //   RESEND_API_KEY   — your Resend API key
 //   FROM_EMAIL       — verified sender address in Resend
 //   BUSINESS_NAME    — displayed in email header (default: RéparTech)
+//
+// SUPABASE_URL, SUPABASE_ANON_KEY and SUPABASE_SERVICE_ROLE_KEY are injected
+// automatically by the Edge Function runtime — do not set them manually.
+
+import { createClient } from 'jsr:@supabase/supabase-js@2'
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY') ?? ''
 const FROM_EMAIL = Deno.env.get('FROM_EMAIL') ?? 'noreply@repartech.com'
 const BUSINESS_NAME = Deno.env.get('BUSINESS_NAME') ?? 'RéparTech'
+
+const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
+const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+
+const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-interface ConfirmPayload {
-  customerName: string
-  customerEmail: string
-  serviceName: string
-  appointmentDate: string  // YYYY-MM-DD
-  startTime: string        // HH:MM:SS
-  endTime: string          // HH:MM:SS
-  notes: string | null
+interface RequestPayload {
+  appointment_id: string
 }
 
 Deno.serve(async (req: Request): Promise<Response> => {
@@ -36,11 +47,58 @@ Deno.serve(async (req: Request): Promise<Response> => {
       return json({ error: 'Email service not configured' }, 500)
     }
 
-    const payload: ConfirmPayload = await req.json()
-    const { customerName, customerEmail, serviceName, appointmentDate, startTime, endTime, notes } = payload
+    // ── Verify the caller is a signed-in admin ──────────────────────────
+    const authHeader = req.headers.get('Authorization') ?? ''
+    const token = authHeader.replace(/^Bearer\s+/i, '')
+    if (!token) {
+      return json({ error: 'Missing Authorization token' }, 401)
+    }
 
-    const formattedDate = formatDate(appointmentDate)
-    const formattedTime = `${formatTime(startTime)} – ${formatTime(endTime)}`
+    const supabaseAsCaller = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: { headers: { Authorization: `Bearer ${token}` } },
+    })
+    const { data: userData, error: userError } = await supabaseAsCaller.auth.getUser(token)
+    if (userError || !userData?.user) {
+      return json({ error: 'Invalid or expired session' }, 401)
+    }
+
+    const { data: adminRow } = await supabaseAdmin
+      .from('admin_users')
+      .select('id')
+      .eq('user_id', userData.user.id)
+      .maybeSingle()
+
+    if (!adminRow) {
+      return json({ error: 'Not authorized' }, 403)
+    }
+
+    // ── Load the appointment server-side — payload only carries the id ──
+    const { appointment_id }: RequestPayload = await req.json()
+    if (!appointment_id) {
+      return json({ error: 'appointment_id is required' }, 400)
+    }
+
+    const { data: appointment, error: fetchError } = await supabaseAdmin
+      .from('appointments')
+      .select('full_name, email, notes, appointment_date, start_time, end_time, services(name)')
+      .eq('id', appointment_id)
+      .maybeSingle()
+
+    if (fetchError) {
+      console.error('Failed to fetch appointment:', fetchError)
+      return json({ error: 'Internal error' }, 500)
+    }
+    if (!appointment) {
+      return json({ error: 'Appointment not found' }, 404)
+    }
+
+    const customerName = appointment.full_name
+    const customerEmail = appointment.email
+    const serviceName = (appointment.services as { name: string } | null)?.name ?? 'Service'
+    const notes = appointment.notes as string | null
+
+    const formattedDate = formatDate(appointment.appointment_date)
+    const formattedTime = `${formatTime(appointment.start_time)} – ${formatTime(appointment.end_time)}`
 
     await sendEmail({
       from: `${BUSINESS_NAME} <${FROM_EMAIL}>`,
