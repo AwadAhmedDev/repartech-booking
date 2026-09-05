@@ -49,7 +49,7 @@ export function DetailsStep({
             type="tel"
             value={values.phone}
             onChange={(e) => onChange('phone', e.target.value)}
-            placeholder="(555) 010-2040"
+            placeholder="06 12 34 56 78"
             className={inputClass(!!errors.phone)}
           />
         </Field>

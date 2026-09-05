@@ -54,9 +54,9 @@ create table if not exists public.blocked_dates (
 create table if not exists public.business_settings (
   id uuid primary key default gen_random_uuid(),
   business_name text not null default 'RepaTek',
-  business_email text not null default 'support@repatek.fr',
-  business_phone text not null default '(555) 010-2040',
-  business_address text not null default '480 Harbor Tech Plaza, Suite 220, Seattle, WA',
+  business_email text not null default 'repatekcontact@gmail.com',
+  business_phone text not null default '+33 7 49 87 16 52',
+  business_address text not null default '1 avenue de Saintonge, 91940 Les Ulis',
   slot_interval_minutes integer not null default 30,
   booking_notice_hours integer not null default 4,
   created_at timestamptz not null default now()
@@ -182,7 +182,7 @@ values
 on conflict (weekday) do nothing;
 
 insert into public.business_settings (business_name, business_email, business_phone, business_address, slot_interval_minutes, booking_notice_hours)
-select 'RepaTek', 'support@repatek.fr', '(555) 010-2040', '480 Harbor Tech Plaza, Suite 220, Seattle, WA', 30, 4
+select 'RepaTek', 'repatekcontact@gmail.com', '+33 7 49 87 16 52', '1 avenue de Saintonge, 91940 Les Ulis', 30, 4
 where not exists (select 1 from public.business_settings);
 
 insert into public.services (name, description, duration_minutes, price, is_active)

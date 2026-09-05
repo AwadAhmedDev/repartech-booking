@@ -141,7 +141,7 @@ export function CGVPage() {
         </P>
         <P>
           Pour exercer le droit de rétractation, le Client doit notifier sa décision par
-          e-mail à <strong>contact@repatek.fr</strong> avant l'expiration du délai.
+          e-mail à <strong>repatekcontact@gmail.com</strong> avant l'expiration du délai.
         </P>
       </Section>
 
@@ -162,7 +162,7 @@ export function CGVPage() {
       <Section title="10. Réclamations et médiation">
         <P>
           Toute réclamation doit être adressée en premier lieu à RepaTek par e-mail à{' '}
-          <strong>contact@repatek.fr</strong>. En cas d'absence de réponse satisfaisante
+          <strong>repatekcontact@gmail.com</strong>. En cas d'absence de réponse satisfaisante
           dans un délai de 60 jours, le Client consommateur peut recourir à un médiateur de
           la consommation.
         </P>

@@ -10,12 +10,12 @@ export function PolitiqueConfidentialitePage() {
       <Section title="1. Responsable du traitement">
         <P>
           Le responsable du traitement des données personnelles collectées via ce site est :
-          RepaTek, dont le siège social est situé à Paris, France (coordonnées complètes
+          RepaTek, dont le siège social est situé à Les Ulis, France (coordonnées complètes
           disponibles dans les Mentions Légales).
         </P>
         <P>
           Pour toute question relative à la protection de vos données, vous pouvez nous contacter
-          à l'adresse : <strong>contact@repatek.fr</strong>
+          à l'adresse : <strong>repatekcontact@gmail.com</strong>
         </P>
       </Section>
 
@@ -124,7 +124,7 @@ export function PolitiqueConfidentialitePage() {
         />
         <P>
           Pour exercer ces droits, contactez-nous par e-mail à{' '}
-          <strong>contact@repatek.fr</strong> en précisant votre demande et en joignant une
+          <strong>repatekcontact@gmail.com</strong> en précisant votre demande et en joignant une
           copie d'un justificatif d'identité. Nous répondons dans un délai maximum de{' '}
           <strong>30 jours calendaires</strong>.
         </P>

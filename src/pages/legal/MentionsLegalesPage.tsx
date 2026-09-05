@@ -18,9 +18,9 @@ export function MentionsLegalesPage() {
             'Raison sociale : RepaTek',
             'Forme juridique : À COMPLÉTER',
             'SIRET : À COMPLÉTER',
-            'Siège social : Paris, France',
-            'Email : contact@repatek.fr',
-            'Téléphone : À COMPLÉTER',
+            'Siège social : 1 avenue de Saintonge, 91940 Les Ulis',
+            'Email : repatekcontact@gmail.com',
+            'Téléphone : +33 7 49 87 16 52',
             'Directeur de la publication : À COMPLÉTER',
           ]}
         />
