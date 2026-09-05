@@ -10,12 +10,12 @@ export function PolitiqueConfidentialitePage() {
       <Section title="1. Responsable du traitement">
         <P>
           Le responsable du traitement des données personnelles collectées via ce site est :
-          RéparTech, dont le siège social est situé à Paris, France (coordonnées complètes
+          RepaTek, dont le siège social est situé à Paris, France (coordonnées complètes
           disponibles dans les Mentions Légales).
         </P>
         <P>
           Pour toute question relative à la protection de vos données, vous pouvez nous contacter
-          à l'adresse : <strong>contact@repartech.fr</strong>
+          à l'adresse : <strong>contact@repatek.fr</strong>
         </P>
       </Section>
 
@@ -68,7 +68,7 @@ export function PolitiqueConfidentialitePage() {
 
       <Section title="5. Destinataires des données">
         <P>
-          Vos données sont accessibles uniquement aux personnes habilitées de RéparTech et aux
+          Vos données sont accessibles uniquement aux personnes habilitées de RepaTek et aux
           sous-traitants techniques suivants, dans le strict cadre de leurs missions :
         </P>
         <Ul
@@ -94,7 +94,7 @@ export function PolitiqueConfidentialitePage() {
 
       <Section title="7. Sécurité des données">
         <P>
-          RéparTech met en œuvre les mesures techniques et organisationnelles appropriées pour
+          RepaTek met en œuvre les mesures techniques et organisationnelles appropriées pour
           protéger vos données contre tout accès non autorisé, perte, altération ou divulgation :
         </P>
         <Ul
@@ -124,7 +124,7 @@ export function PolitiqueConfidentialitePage() {
         />
         <P>
           Pour exercer ces droits, contactez-nous par e-mail à{' '}
-          <strong>contact@repartech.fr</strong> en précisant votre demande et en joignant une
+          <strong>contact@repatek.fr</strong> en précisant votre demande et en joignant une
           copie d'un justificatif d'identité. Nous répondons dans un délai maximum de{' '}
           <strong>30 jours calendaires</strong>.
         </P>
@@ -156,7 +156,7 @@ export function PolitiqueConfidentialitePage() {
 
       <Section title="11. Modifications">
         <P>
-          RéparTech se réserve le droit de modifier la présente politique de confidentialité
+          RepaTek se réserve le droit de modifier la présente politique de confidentialité
           à tout moment. La date de dernière mise à jour est indiquée en haut de cette page.
           En cas de modification substantielle, les utilisateurs seront informés par tout moyen
           approprié.

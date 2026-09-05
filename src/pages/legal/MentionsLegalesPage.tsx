@@ -15,11 +15,11 @@ export function MentionsLegalesPage() {
         </P>
         <Ul
           items={[
-            'Raison sociale : RéparTech',
+            'Raison sociale : RepaTek',
             'Forme juridique : À COMPLÉTER',
             'SIRET : À COMPLÉTER',
             'Siège social : Paris, France',
-            'Email : contact@repartech.fr',
+            'Email : contact@repatek.fr',
             'Téléphone : À COMPLÉTER',
             'Directeur de la publication : À COMPLÉTER',
           ]}
@@ -46,7 +46,7 @@ export function MentionsLegalesPage() {
       <Section title="3. Propriété intellectuelle">
         <P>
           L'ensemble du contenu publié sur ce site (textes, graphiques, logos, images, icônes)
-          est la propriété exclusive de RéparTech ou fait l'objet d'une autorisation d'utilisation.
+          est la propriété exclusive de RepaTek ou fait l'objet d'une autorisation d'utilisation.
           Toute reproduction, distribution, modification ou utilisation à des fins commerciales sans
           autorisation écrite préalable est strictement interdite.
         </P>
@@ -54,20 +54,20 @@ export function MentionsLegalesPage() {
 
       <Section title="4. Responsabilité">
         <P>
-          RéparTech s'efforce de maintenir les informations publiées sur ce site aussi exactes et
+          RepaTek s'efforce de maintenir les informations publiées sur ce site aussi exactes et
           à jour que possible. Toutefois, la société ne peut garantir l'exactitude, la complétude
           ou l'actualité des informations diffusées. En conséquence, l'utilisateur reconnaît utiliser
           ces informations sous sa seule responsabilité.
         </P>
         <P>
-          RéparTech ne saurait être tenu responsable des dommages directs ou indirects résultant
+          RepaTek ne saurait être tenu responsable des dommages directs ou indirects résultant
           de l'utilisation du site ou de l'impossibilité d'y accéder.
         </P>
       </Section>
 
       <Section title="5. Liens hypertextes">
         <P>
-          Le site peut contenir des liens vers des sites tiers. RéparTech n'exerce aucun contrôle
+          Le site peut contenir des liens vers des sites tiers. RepaTek n'exerce aucun contrôle
           sur ces sites et décline toute responsabilité quant à leur contenu ou leurs pratiques
           en matière de protection des données personnelles.
         </P>

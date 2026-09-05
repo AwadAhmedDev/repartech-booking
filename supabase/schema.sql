@@ -1,4 +1,4 @@
--- RéparTech — Computer Repair & IT Support Booking Platform
+-- RepaTek — Computer Repair & IT Support Booking Platform
 -- Run this entire file once in the Supabase SQL editor for a fresh project.
 --
 -- This matches the live schema exactly — column names below are
@@ -53,8 +53,8 @@ create table if not exists public.blocked_dates (
 
 create table if not exists public.business_settings (
   id uuid primary key default gen_random_uuid(),
-  business_name text not null default 'RéparTech',
-  business_email text not null default 'support@repartech.fr',
+  business_name text not null default 'RepaTek',
+  business_email text not null default 'support@repatek.fr',
   business_phone text not null default '(555) 010-2040',
   business_address text not null default '480 Harbor Tech Plaza, Suite 220, Seattle, WA',
   slot_interval_minutes integer not null default 30,
@@ -182,7 +182,7 @@ values
 on conflict (weekday) do nothing;
 
 insert into public.business_settings (business_name, business_email, business_phone, business_address, slot_interval_minutes, booking_notice_hours)
-select 'RéparTech', 'support@repartech.fr', '(555) 010-2040', '480 Harbor Tech Plaza, Suite 220, Seattle, WA', 30, 4
+select 'RepaTek', 'support@repatek.fr', '(555) 010-2040', '480 Harbor Tech Plaza, Suite 220, Seattle, WA', 30, 4
 where not exists (select 1 from public.business_settings);
 
 insert into public.services (name, description, duration_minutes, price, is_active)

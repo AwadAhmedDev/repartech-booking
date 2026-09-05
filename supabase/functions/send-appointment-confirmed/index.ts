@@ -10,7 +10,7 @@
 // Required Supabase secrets (same as send-booking-confirmation):
 //   RESEND_API_KEY   — your Resend API key
 //   FROM_EMAIL       — verified sender address in Resend
-//   BUSINESS_NAME    — displayed in email header (default: RéparTech)
+//   BUSINESS_NAME    — displayed in email header (default: RepaTek)
 //
 // SUPABASE_URL, SUPABASE_ANON_KEY and SUPABASE_SERVICE_ROLE_KEY are injected
 // automatically by the Edge Function runtime — do not set them manually.
@@ -18,8 +18,8 @@
 import { createClient } from 'jsr:@supabase/supabase-js@2'
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY') ?? ''
-const FROM_EMAIL = Deno.env.get('FROM_EMAIL') ?? 'noreply@repartech.com'
-const BUSINESS_NAME = Deno.env.get('BUSINESS_NAME') ?? 'RéparTech'
+const FROM_EMAIL = Deno.env.get('FROM_EMAIL') ?? 'noreply@repatek.fr'
+const BUSINESS_NAME = Deno.env.get('BUSINESS_NAME') ?? 'RepaTek'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!

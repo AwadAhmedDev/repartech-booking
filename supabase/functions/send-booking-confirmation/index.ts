@@ -10,7 +10,7 @@
 //   RESEND_API_KEY            — your Resend API key (https://resend.com)
 //   ADMIN_NOTIFICATION_EMAIL  — address that receives new-booking alerts
 //   FROM_EMAIL                — verified sender address in Resend (e.g. noreply@yourdomain.com)
-//   BUSINESS_NAME             — displayed in email subject / header (default: RéparTech)
+//   BUSINESS_NAME             — displayed in email subject / header (default: RepaTek)
 //
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected automatically by
 // the Edge Function runtime — do not set them manually.
@@ -19,8 +19,8 @@ import { createClient } from 'jsr:@supabase/supabase-js@2'
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY') ?? ''
 const ADMIN_EMAIL = Deno.env.get('ADMIN_NOTIFICATION_EMAIL') ?? ''
-const FROM_EMAIL = Deno.env.get('FROM_EMAIL') ?? 'noreply@repartech.com'
-const BUSINESS_NAME = Deno.env.get('BUSINESS_NAME') ?? 'RéparTech'
+const FROM_EMAIL = Deno.env.get('FROM_EMAIL') ?? 'noreply@repatek.fr'
+const BUSINESS_NAME = Deno.env.get('BUSINESS_NAME') ?? 'RepaTek'
 
 const supabaseAdmin = createClient(
   Deno.env.get('SUPABASE_URL')!,

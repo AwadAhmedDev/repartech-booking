@@ -24,7 +24,7 @@ export function About() {
             <div className="overflow-hidden rounded-2xl">
               <img
                 src={images.supportTeam}
-                alt="Techniciens de support RéparTech dans un environnement de bureau moderne"
+                alt="Techniciens de support RepaTek dans un environnement de bureau moderne"
                 className="h-[520px] w-full object-cover"
               />
             </div>
@@ -50,7 +50,7 @@ export function About() {
               Un Partenaire Technologique, Pas Seulement un Atelier de Réparation
             </h2>
             <p className="mt-5 text-base leading-relaxed text-slate-600">
-              RéparTech a été conçu pour offrir aux particuliers et aux entreprises un endroit unique
+              RepaTek a été conçu pour offrir aux particuliers et aux entreprises un endroit unique
               et fiable pour la réparation informatique et le support technologique. Nos techniciens
               interviennent sur les appareils grand public, les postes de travail professionnels et les
               environnements réseau complets.

@@ -10,7 +10,7 @@ export function CGVPage() {
       <Section title="1. Parties et champ d'application">
         <P>
           Les présentes Conditions Générales de Vente (CGV) s'appliquent à toutes les prestations
-          de services proposées par RéparTech (ci-après « le Prestataire ») à tout client
+          de services proposées par RepaTek (ci-après « le Prestataire ») à tout client
           particulier ou professionnel (ci-après « le Client »).
         </P>
         <P>
@@ -22,7 +22,7 @@ export function CGVPage() {
 
       <Section title="2. Services proposés">
         <P>
-          RéparTech propose des prestations de réparation informatique et de support technique,
+          RepaTek propose des prestations de réparation informatique et de support technique,
           notamment :
         </P>
         <Ul
@@ -45,7 +45,7 @@ export function CGVPage() {
       <Section title="3. Prise de rendez-vous et formation du contrat">
         <P>
           La réservation en ligne constitue une demande de rendez-vous. Le contrat de prestation
-          est formé à la réception de la confirmation écrite de RéparTech (par e-mail), précisant
+          est formé à la réception de la confirmation écrite de RepaTek (par e-mail), précisant
           la date, l'heure et le service retenu.
         </P>
         <P>
@@ -76,7 +76,7 @@ export function CGVPage() {
       <Section title="5. Modalités de paiement">
         <P>
           Le paiement s'effectue <strong>au comptant, en atelier, à la restitution de l'appareil</strong>.
-          RéparTech accepte les modes de paiement suivants :
+          RepaTek accepte les modes de paiement suivants :
         </P>
         <Ul
           items={[
@@ -96,7 +96,7 @@ export function CGVPage() {
         <P>
           Les délais indicatifs communiqués au Client sont donnés à titre d'information. Ils
           peuvent varier en fonction de la disponibilité des pièces détachées ou de la complexité
-          du diagnostic. RéparTech s'engage à informer le Client sans délai en cas de dépassement
+          du diagnostic. RepaTek s'engage à informer le Client sans délai en cas de dépassement
           significatif du délai estimé.
         </P>
         <P>
@@ -107,8 +107,8 @@ export function CGVPage() {
 
       <Section title="7. Garanties">
         <P>
-          <strong>Garantie contractuelle RéparTech (30 jours) :</strong> Toutes les réparations
-          effectuées par RéparTech sont couvertes par une garantie de 30 jours calendaires à
+          <strong>Garantie contractuelle RepaTek (30 jours) :</strong> Toutes les réparations
+          effectuées par RepaTek sont couvertes par une garantie de 30 jours calendaires à
           compter de la date de restitution, portant sur la qualité de la main-d'œuvre et des
           pièces installées. Cette garantie ne couvre pas les dommages accidentels, les actes de
           l'utilisateur ou les pannes non liées à l'intervention effectuée.
@@ -120,7 +120,7 @@ export function CGVPage() {
           le Client peut demander la réparation ou le remplacement de la pièce défectueuse.
         </P>
         <P>
-          <strong>Garantie contre les vices cachés (Art. 1641 C. civ.) :</strong> RéparTech
+          <strong>Garantie contre les vices cachés (Art. 1641 C. civ.) :</strong> RepaTek
           répond des vices cachés affectant les pièces fournies, qui rendent la chose impropre
           à l'usage auquel elle est destinée.
         </P>
@@ -141,28 +141,28 @@ export function CGVPage() {
         </P>
         <P>
           Pour exercer le droit de rétractation, le Client doit notifier sa décision par
-          e-mail à <strong>contact@repartech.fr</strong> avant l'expiration du délai.
+          e-mail à <strong>contact@repatek.fr</strong> avant l'expiration du délai.
         </P>
       </Section>
 
       <Section title="9. Responsabilité du Prestataire">
         <P>
-          RéparTech est tenu à une <strong>obligation de moyens</strong>. La responsabilité de
-          RéparTech ne saurait être engagée en cas de perte de données ou de logiciels présents
+          RepaTek est tenu à une <strong>obligation de moyens</strong>. La responsabilité de
+          RepaTek ne saurait être engagée en cas de perte de données ou de logiciels présents
           sur l'appareil confié. Il est fortement conseillé au Client d'effectuer une sauvegarde
           de ses données avant toute intervention.
         </P>
         <P>
           En cas de dommage causé à l'appareil du Client lors de l'intervention, la responsabilité
-          de RéparTech sera limitée à la valeur vénale de l'appareil au moment du dépôt,
+          de RepaTek sera limitée à la valeur vénale de l'appareil au moment du dépôt,
           déduction faite de la vétusté.
         </P>
       </Section>
 
       <Section title="10. Réclamations et médiation">
         <P>
-          Toute réclamation doit être adressée en premier lieu à RéparTech par e-mail à{' '}
-          <strong>contact@repartech.fr</strong>. En cas d'absence de réponse satisfaisante
+          Toute réclamation doit être adressée en premier lieu à RepaTek par e-mail à{' '}
+          <strong>contact@repatek.fr</strong>. En cas d'absence de réponse satisfaisante
           dans un délai de 60 jours, le Client consommateur peut recourir à un médiateur de
           la consommation.
         </P>

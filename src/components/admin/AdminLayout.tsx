@@ -119,7 +119,7 @@ export function AdminLayout() {
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-electric-500 to-cyan-400 shadow-glow">
             <Cpu className="h-4 w-4 text-white" strokeWidth={2.25} />
           </span>
-          <span className="font-display text-sm font-semibold text-white">RéparTech Admin</span>
+          <span className="font-display text-sm font-semibold text-white">RepaTek Admin</span>
         </div>
         <button
           type="button"
@@ -147,7 +147,7 @@ export function AdminLayout() {
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-electric-500 to-cyan-400 shadow-glow">
                   <Cpu className="h-4 w-4 text-white" strokeWidth={2.25} />
                 </span>
-                <span className="font-display text-sm font-semibold text-white">RéparTech Admin</span>
+                <span className="font-display text-sm font-semibold text-white">RepaTek Admin</span>
               </div>
               <button
                 type="button"
@@ -169,7 +169,7 @@ export function AdminLayout() {
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-electric-500 to-cyan-400 shadow-glow">
             <Cpu className="h-5 w-5 text-white" strokeWidth={2.25} />
           </span>
-          <span className="font-display text-sm font-semibold text-white">RéparTech Admin</span>
+          <span className="font-display text-sm font-semibold text-white">RepaTek Admin</span>
         </div>
         <SidebarNav />
       </aside>

@@ -11,7 +11,7 @@ const TESTIMONIALS = [
   },
   {
     quote:
-      "Après une attaque par ransomware sur notre réseau d'entreprise, RéparTech est intervenu rapidement et professionnellement. Tout a été récupéré. Je les recommande sans hésitation.",
+      "Après une attaque par ransomware sur notre réseau d'entreprise, RepaTek est intervenu rapidement et professionnellement. Tout a été récupéré. Je les recommande sans hésitation.",
     name: 'Sophie Durand',
     role: 'Directrice Administrative',
     location: 'PME Textile',

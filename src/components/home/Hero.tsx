@@ -65,7 +65,7 @@ export function Hero() {
             <div className="absolute inset-0 overflow-hidden rounded-2xl shadow-[0_24px_70px_-30px_rgba(15,23,42,0.55)] ring-1 ring-slate-900/5">
               <img
                 src={images.heroWorkstation}
-                alt="Technicien certifié RéparTech effectuant un diagnostic sur un ordinateur portable"
+                alt="Technicien certifié RepaTek effectuant un diagnostic sur un ordinateur portable"
                 className="h-full w-full object-cover"
               />
               {/* Gradient overlay */}
@@ -98,7 +98,7 @@ export function Hero() {
         <div className="relative overflow-hidden rounded-2xl ring-1 ring-slate-900/5">
           <img
             src={images.heroWorkstation}
-            alt="Technicien certifié RéparTech"
+            alt="Technicien certifié RepaTek"
             className="h-60 w-full object-cover sm:h-72"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />

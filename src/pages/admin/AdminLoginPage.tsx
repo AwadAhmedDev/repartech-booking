@@ -35,7 +35,7 @@ export function AdminLoginPage() {
             <Cpu className="h-6 w-6 text-white" strokeWidth={2.25} />
           </span>
           <h1 className="mt-4 font-display text-2xl font-bold text-white">Connexion Administrateur</h1>
-          <p className="mt-1.5 text-sm text-white/50">Tableau de bord de gestion RéparTech</p>
+          <p className="mt-1.5 text-sm text-white/50">Tableau de bord de gestion RepaTek</p>
         </div>
 
         <form onSubmit={handleSubmit} className="rounded-2xl border border-white/10 bg-white/[0.03] p-7 shadow-premium">

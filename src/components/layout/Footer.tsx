@@ -47,7 +47,7 @@ export function Footer() {
                   <span className="font-display text-[11px] font-bold tracking-tight text-white">RT</span>
                 </span>
                 <span className="font-display text-lg font-semibold text-white">
-                  {settings?.business_name ?? 'RéparTech'}
+                  {settings?.business_name ?? 'RepaTek'}
                 </span>
               </div>
               <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/55">
@@ -127,7 +127,7 @@ export function Footer() {
           </div>
 
           <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
-            <p>&copy; {year} {settings?.business_name ?? 'RéparTech'}. Tous droits réservés.</p>
+            <p>&copy; {year} {settings?.business_name ?? 'RepaTek'}. Tous droits réservés.</p>
             <div className="flex flex-wrap gap-x-5 gap-y-2">
               <Link to="/mentions-legales" className="transition-colors hover:text-white">Mentions Légales</Link>
               <Link to="/confidentialite" className="transition-colors hover:text-white">Politique de Confidentialité</Link>

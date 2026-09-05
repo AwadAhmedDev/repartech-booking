@@ -10,12 +10,12 @@ export function CGUPage() {
       <Section title="1. Objet">
         <P>
           Les présentes Conditions Générales d'Utilisation (CGU) ont pour objet de définir les
-          modalités et conditions d'utilisation du site web de RéparTech (ci-après « le Site »),
+          modalités et conditions d'utilisation du site web de RepaTek (ci-après « le Site »),
           ainsi que les droits et obligations des utilisateurs.
         </P>
         <P>
           Tout accès et toute utilisation du Site impliquent l'acceptation sans réserve des
-          présentes CGU. RéparTech se réserve le droit de les modifier à tout moment ; les CGU
+          présentes CGU. RepaTek se réserve le droit de les modifier à tout moment ; les CGU
           applicables sont celles en vigueur au moment de la visite.
         </P>
       </Section>
@@ -23,12 +23,12 @@ export function CGUPage() {
       <Section title="2. Accès au service">
         <P>
           Le Site est accessible gratuitement à tout utilisateur disposant d'un accès à Internet.
-          RéparTech s'efforce de maintenir le service accessible 24h/24 et 7j/7, mais ne peut
+          RepaTek s'efforce de maintenir le service accessible 24h/24 et 7j/7, mais ne peut
           garantir une disponibilité continue en raison d'opérations de maintenance, de mises à
           jour ou de pannes techniques indépendantes de sa volonté.
         </P>
         <P>
-          RéparTech se réserve le droit de suspendre, limiter ou interrompre l'accès au Site
+          RepaTek se réserve le droit de suspendre, limiter ou interrompre l'accès au Site
           à tout moment et sans préavis, notamment pour des raisons de maintenance ou de sécurité.
         </P>
       </Section>
@@ -43,7 +43,7 @@ export function CGUPage() {
             "Fournir des informations exactes, complètes et à jour lors de la prise de rendez-vous",
             "Ne pas utiliser le service à des fins frauduleuses ou illicites",
             "Ne pas perturber le fonctionnement normal du service (tentatives d'intrusion, soumissions automatisées, etc.)",
-            "Prévenir RéparTech le plus tôt possible en cas d'annulation ou de modification souhaitée",
+            "Prévenir RepaTek le plus tôt possible en cas d'annulation ou de modification souhaitée",
           ]}
         />
       </Section>
@@ -51,13 +51,13 @@ export function CGUPage() {
       <Section title="4. Propriété intellectuelle">
         <P>
           L'ensemble des éléments constituant le Site (textes, images, logos, charte graphique,
-          code source, architecture) est la propriété exclusive de RéparTech ou fait l'objet d'une
-          licence d'utilisation accordée à RéparTech.
+          code source, architecture) est la propriété exclusive de RepaTek ou fait l'objet d'une
+          licence d'utilisation accordée à RepaTek.
         </P>
         <P>
           Toute reproduction, représentation, modification, publication, transmission ou
           utilisation de tout ou partie des éléments du Site, par quelque procédé que ce soit,
-          sans l'autorisation écrite préalable de RéparTech, est strictement interdite et
+          sans l'autorisation écrite préalable de RepaTek, est strictement interdite et
           constituerait une contrefaçon sanctionnée par les articles L.335-2 et suivants du Code
           de la propriété intellectuelle.
         </P>
@@ -71,9 +71,9 @@ export function CGUPage() {
         </P>
       </Section>
 
-      <Section title="6. Limitation de responsabilité de RéparTech">
+      <Section title="6. Limitation de responsabilité de RepaTek">
         <P>
-          RéparTech ne saurait être tenu responsable :
+          RepaTek ne saurait être tenu responsable :
         </P>
         <Ul
           items={[
@@ -88,7 +88,7 @@ export function CGUPage() {
       <Section title="7. Liens vers des sites tiers">
         <P>
           Le Site peut contenir des liens hypertextes vers des sites tiers. Ces liens sont
-          fournis à titre informatif uniquement. RéparTech n'exerce aucun contrôle sur le contenu
+          fournis à titre informatif uniquement. RepaTek n'exerce aucun contrôle sur le contenu
           de ces sites et décline toute responsabilité quant à leur disponibilité, leur contenu
           ou leurs pratiques.
         </P>
@@ -96,7 +96,7 @@ export function CGUPage() {
 
       <Section title="8. Modifications des CGU">
         <P>
-          RéparTech se réserve le droit de modifier les présentes CGU à tout moment. Les
+          RepaTek se réserve le droit de modifier les présentes CGU à tout moment. Les
           modifications prennent effet dès leur publication sur le Site. L'utilisation continue
           du Site après modification vaut acceptation des nouvelles CGU.
         </P>

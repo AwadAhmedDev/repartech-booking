@@ -1,4 +1,4 @@
-# RéparTech — Computer Repair & IT Support Booking Platform
+# RepaTek — Computer Repair & IT Support Booking Platform
 
 A production-ready computer repair and IT support marketing site with a real Supabase-backed
 booking system and a secure admin dashboard.

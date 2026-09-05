@@ -57,7 +57,7 @@ export function Navbar() {
               <span className="font-display text-[11px] font-bold tracking-tight text-white">RT</span>
             </span>
             <span className="font-display text-base font-semibold tracking-tight text-white">
-              {settings?.business_name ?? 'RéparTech'}
+              {settings?.business_name ?? 'RepaTek'}
             </span>
           </Link>
 
