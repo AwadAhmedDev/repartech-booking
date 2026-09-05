@@ -60,15 +60,7 @@ export function AppointmentsPage() {
 
       // Send confirmation email only when moving from pending → confirmed
       if (prevStatus === 'pending' && newStatus === 'confirmed' && appt.services) {
-        sendAppointmentConfirmedEmail({
-          customerName: appt.full_name,
-          customerEmail: appt.email,
-          serviceName: appt.services.name,
-          appointmentDate: appt.appointment_date,
-          startTime: appt.start_time,
-          endTime: appt.end_time,
-          notes: appt.notes,
-        })
+        sendAppointmentConfirmedEmail(appt.id)
           .then(() => {
             setEmailSentId(appt.id)
             setTimeout(() => setEmailSentId(null), 5000)
