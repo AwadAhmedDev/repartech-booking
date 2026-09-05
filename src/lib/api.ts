@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { withRetry } from './retry'
 import type {
   AppointmentStatus,
   AppointmentWithService,
@@ -12,45 +13,53 @@ import type {
 // ---------- Public reads ----------
 
 export async function fetchActiveServices(): Promise<Service[]> {
-  const { data, error } = await supabase
-    .from('services')
-    .select('*')
-    .eq('is_active', true)
-    .order('name', { ascending: true })
+  return withRetry(async () => {
+    const { data, error } = await supabase
+      .from('services')
+      .select('*')
+      .eq('is_active', true)
+      .order('name', { ascending: true })
 
-  if (error) throw error
-  return data ?? []
+    if (error) throw error
+    return data ?? []
+  })
 }
 
 export async function fetchBusinessSettings(): Promise<BusinessSettings | null> {
-  const { data, error } = await supabase
-    .from('business_settings')
-    .select('*')
-    .limit(1)
-    .maybeSingle()
+  return withRetry(async () => {
+    const { data, error } = await supabase
+      .from('business_settings')
+      .select('*')
+      .limit(1)
+      .maybeSingle()
 
-  if (error) throw error
-  return data
+    if (error) throw error
+    return data
+  })
 }
 
 export async function fetchBusinessHours(): Promise<BusinessHours[]> {
-  const { data, error } = await supabase
-    .from('business_hours')
-    .select('*')
-    .order('weekday', { ascending: true })
+  return withRetry(async () => {
+    const { data, error } = await supabase
+      .from('business_hours')
+      .select('*')
+      .order('weekday', { ascending: true })
 
-  if (error) throw error
-  return data ?? []
+    if (error) throw error
+    return data ?? []
+  })
 }
 
 export async function fetchBlockedDates(): Promise<BlockedDate[]> {
-  const { data, error } = await supabase
-    .from('blocked_dates')
-    .select('*')
-    .order('blocked_date', { ascending: true })
+  return withRetry(async () => {
+    const { data, error } = await supabase
+      .from('blocked_dates')
+      .select('*')
+      .order('blocked_date', { ascending: true })
 
-  if (error) throw error
-  return data ?? []
+    if (error) throw error
+    return data ?? []
+  })
 }
 
 // Returns every non-cancelled appointment that falls within the date range,
@@ -61,15 +70,17 @@ export async function fetchAppointmentsForDateRange(
   startDate: string,
   endDate: string,
 ): Promise<{ appointment_date: string; start_time: string; end_time: string; status: AppointmentStatus }[]> {
-  const { data, error } = await supabase
-    .from('appointments')
-    .select('appointment_date, start_time, end_time, status')
-    .neq('status', 'cancelled')
-    .gte('appointment_date', startDate)
-    .lte('appointment_date', endDate)
+  return withRetry(async () => {
+    const { data, error } = await supabase
+      .from('appointments')
+      .select('appointment_date, start_time, end_time, status')
+      .neq('status', 'cancelled')
+      .gte('appointment_date', startDate)
+      .lte('appointment_date', endDate)
 
-  if (error) throw error
-  return data ?? []
+    if (error) throw error
+    return data ?? []
+  })
 }
 
 // ---------- Public write (booking) ----------
