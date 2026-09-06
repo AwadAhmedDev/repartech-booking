@@ -1,10 +1,10 @@
 import { ArrowRight } from 'lucide-react'
 import { images } from '../../data/images'
 
-const STATS = [
-  { value: '15+', label: "ans d'expérience" },
-  { value: '300+', label: 'entreprises clientes' },
-  { value: '98 %', label: 'clients satisfaits' },
+const HIGHLIGHTS = [
+  { value: 'Qualifié', label: 'Technicien expérimenté et passionné' },
+  { value: 'Polyvalent', label: "Particuliers, PME et réseaux d'entreprise" },
+  { value: 'Fiable', label: '30 jours de garantie sur nos réparations' },
 ]
 
 const CERTS = [
@@ -62,10 +62,10 @@ export function About() {
             </p>
 
             <div className="mt-10 grid grid-cols-3 gap-4 border-t border-slate-100 pt-8">
-              {STATS.map((stat) => (
-                <div key={stat.label} className="border-l-2 border-blue-600 pl-4">
-                  <p className="font-display text-2xl font-bold text-slate-900">{stat.value}</p>
-                  <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{stat.label}</p>
+              {HIGHLIGHTS.map((item) => (
+                <div key={item.label} className="border-l-2 border-blue-600 pl-4">
+                  <p className="font-display text-xl font-bold text-slate-900">{item.value}</p>
+                  <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{item.label}</p>
                 </div>
               ))}
             </div>
