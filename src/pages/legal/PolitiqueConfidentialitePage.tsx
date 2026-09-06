@@ -46,7 +46,7 @@ export function PolitiqueConfidentialitePage() {
         <Ul
           items={[
             "Gestion et confirmation des rendez-vous — base légale : exécution d'un contrat (Art. 6.1.b RGPD)",
-            "Envoi d'e-mails de confirmation et de rappel — base légale : exécution d'un contrat (Art. 6.1.b RGPD)",
+            "Envoi d'e-mails liés au rendez-vous (accusé de réception de la demande, notification à l'administrateur, confirmation du rendez-vous) — base légale : exécution d'un contrat (Art. 6.1.b RGPD)",
             "Gestion des litiges et obligations comptables — base légale : obligation légale (Art. 6.1.c RGPD)",
             "Amélioration de la qualité du service — base légale : intérêt légitime (Art. 6.1.f RGPD)",
           ]}
@@ -74,7 +74,7 @@ export function PolitiqueConfidentialitePage() {
         <Ul
           items={[
             "Supabase Inc. (PostgreSQL hébergé sur AWS en Irlande, Union Européenne) — stockage sécurisé des données de réservation",
-            "Resend (envoi via infrastructure basée en Irlande, Union Européenne) — envoi des confirmations et rappels par e-mail",
+            "Resend (envoi via infrastructure basée en Irlande, Union Européenne) — envoi des e-mails liés au rendez-vous",
             "Hostinger International Limited (Chypre, Union Européenne) — hébergement du site web",
           ]}
         />
