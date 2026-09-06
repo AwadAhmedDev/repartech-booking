@@ -1,0 +1,87 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      HOSTINGER_USERNAME: u707298094
+      HOSTINGER_DOMAIN: repatek.fr
+      # Public by design — the anon key ships inside the built JS bundle
+      # regardless; real access control is enforced by Supabase RLS, not
+      # by keeping this value secret.
+      VITE_SUPABASE_URL: https://pdxmdqljkmkdlqvyzgvk.supabase.co
+      VITE_SUPABASE_ANON_KEY: sb_publishable_0dJsollq6EhR3d94L73XTw_H1lzAqGD
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Add SPA rewrite rule (client-side routes need this on Apache/LiteSpeed)
+        run: |
+          cat > dist/.htaccess <<'EOF'
+          <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteBase /
+            RewriteRule ^index\.html$ - [L]
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule . /index.html [L]
+          </IfModule>
+          EOF
+
+      - name: Package build as a zip archive
+        run: |
+          cd dist
+          zip -r ../repatek-deploy.zip . -x '.git*'
+          cd ..
+          unzip -l repatek-deploy.zip
+
+      - name: Deploy to Hostinger
+        env:
+          HOSTINGER_API_TOKEN: ${{ secrets.HOSTINGER_API_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          echo "Requesting an upload URL..."
+          RESP=$(curl -sS -f -X POST "https://developers.hostinger.com/api/hosting/v1/files/upload-urls" \
+            -H "Authorization: Bearer $HOSTINGER_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"username\":\"$HOSTINGER_USERNAME\",\"domain\":\"$HOSTINGER_DOMAIN\"}")
+
+          URL=$(echo "$RESP" | jq -r .url)
+          AUTH=$(echo "$RESP" | jq -r .auth_key)
+          REST_AUTH=$(echo "$RESP" | jq -r .rest_auth_key)
+          SIZE=$(stat -c%s repatek-deploy.zip)
+
+          echo "Creating upload session..."
+          curl -sS -f -X POST "$URL/repatek-deploy.zip?override=true" \
+            -H "X-Auth: $AUTH" -H "X-Auth-Rest: $REST_AUTH" \
+            -H "Tus-Resumable: 1.0.0" -H "Upload-Length: $SIZE" -H "Upload-Offset: 0"
+
+          echo "Uploading archive ($SIZE bytes)..."
+          curl -sS -f -X PATCH "$URL/repatek-deploy.zip?override=true" \
+            -H "X-Auth: $AUTH" -H "X-Auth-Rest: $REST_AUTH" \
+            -H "Tus-Resumable: 1.0.0" -H "Content-Type: application/offset+octet-stream" \
+            -H "Upload-Offset: 0" --data-binary "@repatek-deploy.zip"
+
+          echo "Deploying archive..."
+          curl -sS -f -X POST "https://developers.hostinger.com/api/hosting/v1/accounts/$HOSTINGER_USERNAME/websites/$HOSTINGER_DOMAIN/deploy" \
+            -H "Authorization: Bearer $HOSTINGER_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"archive_path":"repatek-deploy.zip"}'
+
+          echo "Deploy request accepted."

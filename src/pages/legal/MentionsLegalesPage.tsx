@@ -16,7 +16,7 @@ export function MentionsLegalesPage() {
         <Ul
           items={[
             'Raison sociale : RepaTek',
-            'Forme juridique : À COMPLÉTER',
+            'Forme juridique : Auto-entrepreneur',
             'SIRET : À COMPLÉTER',
             'Siège social : 1 avenue de Saintonge, 91940 Les Ulis',
             'Email : repatekcontact@gmail.com',
