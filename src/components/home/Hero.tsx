@@ -18,7 +18,7 @@ export function Hero() {
           <div className="flex flex-col justify-center">
             <span className="inline-flex w-fit items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-blue-700">
               <ShieldCheck className="h-3.5 w-3.5" />
-              Techniciens certifiés · Intervention sous 24 h
+              Techniciens expérimentés · Intervention sous 24 h
             </span>
 
             <h1 className="mt-6 font-display text-[2.6rem] font-bold leading-[1.06] tracking-tight text-slate-900 sm:text-6xl lg:text-[4.25rem]">
@@ -29,7 +29,7 @@ export function Hero() {
             </h1>
 
             <p className="mt-6 max-w-lg text-base leading-relaxed text-slate-600 sm:text-lg">
-              Pannes matérielles, virus, réseaux — nos techniciens certifiés diagnostiquent et réparent
+              Pannes matérielles, virus, réseaux — nos techniciens expérimentés diagnostiquent et réparent
               vos appareils rapidement, avec un devis clair avant toute intervention.
             </p>
 
@@ -65,7 +65,7 @@ export function Hero() {
             <div className="absolute inset-0 overflow-hidden rounded-2xl shadow-[0_24px_70px_-30px_rgba(15,23,42,0.55)] ring-1 ring-slate-900/5">
               <img
                 src={images.heroWorkstation}
-                alt="Technicien certifié RepaTek effectuant un diagnostic sur un ordinateur portable"
+                alt="Technicien RepaTek effectuant un diagnostic sur un ordinateur portable"
                 className="h-full w-full object-cover"
               />
               {/* Gradient overlay */}
@@ -98,7 +98,7 @@ export function Hero() {
         <div className="relative overflow-hidden rounded-2xl ring-1 ring-slate-900/5">
           <img
             src={images.heroWorkstation}
-            alt="Technicien certifié RepaTek"
+            alt="Technicien RepaTek"
             className="h-60 w-full object-cover sm:h-72"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />

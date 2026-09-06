@@ -16,7 +16,7 @@ const REASONS = [
     description: 'Tarifs forfaitaires sans frais cachés. Vous approuvez le coût avant toute réparation.',
   },
   {
-    title: 'Techniciens Certifiés et Vérifiés',
+    title: 'Techniciens Expérimentés et Rigoureux',
     description:
       'Expérimentés sur du matériel grand public et professionnel. Chaque intervention est documentée.',
   },
