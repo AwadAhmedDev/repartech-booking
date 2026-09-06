@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { NavLink, Navigate, Outlet, useLocation } from 'react-router-dom'
+import { Link, NavLink, Navigate, Outlet, useLocation } from 'react-router-dom'
 import {
   CalendarClock,
   CalendarOff,
   Clock,
   Cpu,
   Gauge,
+  Globe,
   Loader2,
   LogOut,
   Menu,
@@ -52,10 +53,18 @@ function SidebarNav({ onNavClick }: { onNavClick?: () => void }) {
 
       <div className="shrink-0 border-t border-white/10 px-4 py-4">
         <p className="truncate px-2 text-xs text-white/40">{user?.email}</p>
+        <Link
+          to="/"
+          onClick={onNavClick}
+          className="mt-2 flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium text-white/55 transition-colors hover:bg-white/5 hover:text-white"
+        >
+          <Globe className="h-4 w-4" />
+          Voir le Site Principal
+        </Link>
         <button
           type="button"
           onClick={() => signOut()}
-          className="mt-2 flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium text-white/55 transition-colors hover:bg-white/5 hover:text-white"
+          className="mt-1 flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium text-white/55 transition-colors hover:bg-white/5 hover:text-white"
         >
           <LogOut className="h-4 w-4" />
           Se Déconnecter
