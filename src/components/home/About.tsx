@@ -7,10 +7,10 @@ const HIGHLIGHTS = [
   { value: 'Fiable', label: '30 jours de garantie sur nos réparations' },
 ]
 
-const CERTS = [
-  'Microsoft Partner',
-  'CompTIA Certified',
-  'Apple Authorized',
+const APPROACH = [
+  'Windows & macOS',
+  'Diagnostic transparent',
+  'Sans engagement',
 ]
 
 export function About() {
@@ -28,14 +28,14 @@ export function About() {
                 className="h-[520px] w-full object-cover"
               />
             </div>
-            {/* Floating credential badge */}
+            {/* Floating approach badge */}
             <div className="absolute -bottom-5 -right-4 hidden rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-lg lg:block">
               <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-                Certifié &amp; Agréé
+                Notre Approche
               </p>
               <div className="mt-2 flex flex-col gap-1">
-                {CERTS.map((c) => (
-                  <span key={c} className="text-sm font-medium text-slate-800">{c}</span>
+                {APPROACH.map((item) => (
+                  <span key={item} className="text-sm font-medium text-slate-800">{item}</span>
                 ))}
               </div>
             </div>
