@@ -53,11 +53,3 @@ export function Ul({ items }: { items: string[] }) {
     </ul>
   )
 }
-
-export function Placeholder({ text }: { text: string }) {
-  return (
-    <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs font-semibold text-amber-700">
-      [{text}]
-    </span>
-  )
-}

@@ -1,4 +1,4 @@
-import { LegalLayout, P, Placeholder, Section, Ul } from '../../components/layout/LegalLayout'
+import { LegalLayout, P, Section, Ul } from '../../components/layout/LegalLayout'
 
 export function MentionsLegalesPage() {
   return (
@@ -17,18 +17,13 @@ export function MentionsLegalesPage() {
           items={[
             'Raison sociale : RepaTek',
             'Forme juridique : Auto-entrepreneur',
-            'SIRET : À COMPLÉTER',
+            'SIRET :',
             'Siège social : 1 avenue de Saintonge, 91940 Les Ulis',
             'Email : repatekcontact@gmail.com',
             'Téléphone : +33 7 49 87 16 52',
             'Directeur de la publication : Aden DAHER OKIEH',
           ]}
         />
-        <P>
-          Les champs marqués{' '}
-          <Placeholder text="À COMPLÉTER" /> doivent être renseignés avec vos informations réelles
-          avant la mise en ligne.
-        </P>
       </Section>
 
       <Section title="2. Hébergement">
