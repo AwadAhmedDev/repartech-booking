@@ -1,9 +1,16 @@
 -- RepaTek — Computer Repair & IT Support Booking Platform
 -- Run this entire file once in the Supabase SQL editor for a fresh project.
+-- This is the single source of truth — it already includes what used to be
+-- separate files under supabase/migrations/ (kept there only as a dated
+-- history of how production got here, not as extra setup steps to run).
 --
 -- This matches the live schema exactly — column names below are
 -- authoritative for the application code (src/types/database.ts,
 -- src/lib/api.ts, src/lib/availability.ts). Do not rename them.
+--
+-- After running this file, also deploy the two Edge Functions under
+-- supabase/functions/ and set the RESEND_API_KEY secret (see README.md)
+-- — without it, confirmation emails silently fail closed.
 
 create extension if not exists "pgcrypto";
 
@@ -70,16 +77,35 @@ create table if not exists public.admin_users (
 );
 
 -- =========================================================
--- INDEXES
+-- OVERLAP PROTECTION
 -- =========================================================
 
--- Prevents two non-cancelled appointments from sharing the same date and
--- start time, catching concurrent double-bookings at the database level.
--- The application code surfaces a user-friendly "slot taken" message on
--- the unique violation error code (23505).
-create unique index if not exists appointments_unique_slot
-  on public.appointments (appointment_date, start_time)
-  where status <> 'cancelled';
+-- Prevents any two non-cancelled appointments from overlapping in time,
+-- regardless of start time — catches concurrent double-bookings at the
+-- database level for ANY insert path, not just the app's own code. The
+-- application code surfaces a user-friendly "slot taken" message on the
+-- exclusion violation error code (23P01, alongside 23505 for the rare
+-- identical-start-time case).
+create extension if not exists btree_gist;
+
+alter table public.appointments
+  add column if not exists starts_at timestamptz
+    generated always as (
+      (appointment_date::timestamp + start_time) at time zone 'Europe/Paris'
+    ) stored,
+  add column if not exists ends_at timestamptz
+    generated always as (
+      (appointment_date::timestamp + end_time) at time zone 'Europe/Paris'
+    ) stored;
+
+alter table public.appointments
+  drop constraint if exists appointments_no_overlap;
+
+alter table public.appointments
+  add constraint appointments_no_overlap
+  exclude using gist (
+    tstzrange(starts_at, ends_at) with &&
+  ) where (status <> 'cancelled');
 
 -- =========================================================
 -- HELPER FUNCTION — used by RLS policies below
@@ -117,12 +143,11 @@ drop policy if exists "services_admin_write" on public.services;
 create policy "services_admin_write" on public.services
   for all using (public.is_admin()) with check (public.is_admin());
 
--- appointments: public can INSERT only with status = 'pending' (booking form),
---   no public read, admins can read/update/delete
-drop policy if exists "appointments_public_insert" on public.appointments;
-create policy "appointments_public_insert" on public.appointments
-  for insert with check (status = 'pending');
-
+-- appointments: no direct public INSERT policy at all — the public booking
+--   form calls book_appointment() below instead, which validates business
+--   hours, blocked dates, the notice window, and a per-email rate limit
+--   before inserting (as security definer, it bypasses RLS to do so).
+--   No public read; admins can read/update/delete.
 drop policy if exists "appointments_admin_select" on public.appointments;
 create policy "appointments_admin_select" on public.appointments
   for select using (public.is_admin());
@@ -166,6 +191,105 @@ create policy "business_settings_admin_write" on public.business_settings
 drop policy if exists "admin_users_self_select" on public.admin_users;
 create policy "admin_users_self_select" on public.admin_users
   for select using (user_id = auth.uid());
+
+-- =========================================================
+-- BOOKING RPC — the only way an anonymous visitor can create an appointment
+-- =========================================================
+
+create or replace function public.book_appointment(
+  p_service_id uuid,
+  p_full_name text,
+  p_email text,
+  p_phone text,
+  p_notes text,
+  p_appointment_date date,
+  p_start_time time
+) returns uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_duration integer;
+  v_end_time time;
+  v_weekday integer;
+  v_day_open boolean;
+  v_day_start time;
+  v_day_end time;
+  v_is_blocked boolean;
+  v_notice_hours integer;
+  v_recent_count integer;
+  v_id uuid;
+begin
+  -- Rate limit: at most 3 active requests per email per rolling 24h.
+  select count(*) into v_recent_count
+  from appointments
+  where email = p_email
+    and status <> 'cancelled'
+    and created_at > now() - interval '24 hours';
+
+  if v_recent_count >= 3 then
+    raise exception 'too_many_requests' using errcode = 'B0001';
+  end if;
+
+  -- Service must exist and be active; duration comes from the DB, not the caller.
+  select duration_minutes into v_duration
+  from services
+  where id = p_service_id and is_active = true;
+
+  if v_duration is null then
+    raise exception 'invalid_service' using errcode = 'B0002';
+  end if;
+
+  v_end_time := p_start_time + (v_duration || ' minutes')::interval;
+
+  -- Business hours for that weekday (0 = Sunday, matches business_hours.weekday).
+  v_weekday := extract(dow from p_appointment_date);
+
+  select is_open, start_time, end_time
+    into v_day_open, v_day_start, v_day_end
+  from business_hours
+  where weekday = v_weekday;
+
+  if v_day_open is not true or v_day_start is null or v_day_end is null
+     or p_start_time < v_day_start or v_end_time > v_day_end then
+    raise exception 'outside_business_hours' using errcode = 'B0003';
+  end if;
+
+  -- Blocked dates.
+  select exists(
+    select 1 from blocked_dates where blocked_date = p_appointment_date
+  ) into v_is_blocked;
+
+  if v_is_blocked then
+    raise exception 'date_blocked' using errcode = 'B0004';
+  end if;
+
+  -- Minimum booking notice window, evaluated in the business's own timezone.
+  select booking_notice_hours into v_notice_hours from business_settings limit 1;
+
+  if v_notice_hours is not null
+     and ((p_appointment_date::timestamp + p_start_time) at time zone 'Europe/Paris')
+         < (now() + (v_notice_hours || ' hours')::interval) then
+    raise exception 'too_soon' using errcode = 'B0005';
+  end if;
+
+  -- Insert. appointments_no_overlap is the final guard against a
+  -- conflicting slot regardless of any check above.
+  insert into appointments (
+    service_id, full_name, email, phone, notes,
+    appointment_date, start_time, end_time, status
+  ) values (
+    p_service_id, p_full_name, p_email, p_phone, p_notes,
+    p_appointment_date, p_start_time, v_end_time, 'pending'
+  ) returning id into v_id;
+
+  return v_id;
+end;
+$$;
+
+revoke all on function public.book_appointment(uuid, text, text, text, text, date, time) from public;
+grant execute on function public.book_appointment(uuid, text, text, text, text, date, time) to anon, authenticated;
 
 -- =========================================================
 -- SEED DATA
