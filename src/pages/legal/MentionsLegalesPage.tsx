@@ -21,7 +21,7 @@ export function MentionsLegalesPage() {
             'Siège social : 1 avenue de Saintonge, 91940 Les Ulis',
             'Email : repatekcontact@gmail.com',
             'Téléphone : +33 7 49 87 16 52',
-            'Directeur de la publication : À COMPLÉTER',
+            'Directeur de la publication : Aden DAHER OKIEH',
           ]}
         />
         <P>
@@ -37,8 +37,8 @@ export function MentionsLegalesPage() {
         </P>
         <Ul
           items={[
-            'Hébergement web : Vercel Inc., 340 Pine Street Suite 500, San Francisco, CA 94104, États-Unis — vercel.com',
-            'Base de données et authentification : Supabase Inc., 970 Toa Payoh North #07-04, Singapore 318992 — supabase.com',
+            'Hébergement web : Hostinger International Limited, 61 Lordou Vironos str., 6023 Larnaca, Chypre — hostinger.com',
+            'Base de données et authentification : Supabase Inc. (infrastructure hébergée sur des serveurs AWS situés en Irlande, Union Européenne) — supabase.com',
           ]}
         />
       </Section>

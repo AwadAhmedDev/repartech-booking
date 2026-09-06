@@ -73,8 +73,9 @@ export function PolitiqueConfidentialitePage() {
         </P>
         <Ul
           items={[
-            "Supabase Inc. (PostgreSQL hébergé sur AWS us-east-1) — stockage sécurisé des données de réservation",
-            "Prestataire d'envoi d'e-mails (Resend / configuration SMTP) — envoi des confirmations et rappels",
+            "Supabase Inc. (PostgreSQL hébergé sur AWS en Irlande, Union Européenne) — stockage sécurisé des données de réservation",
+            "Resend (envoi via infrastructure basée en Irlande, Union Européenne) — envoi des confirmations et rappels par e-mail",
+            "Hostinger International Limited (Chypre, Union Européenne) — hébergement du site web",
           ]}
         />
         <P>
@@ -84,8 +85,17 @@ export function PolitiqueConfidentialitePage() {
 
       <Section title="6. Transferts hors Union Européenne">
         <P>
-          Supabase Inc. héberge les données sur des serveurs AWS situés dans la région
-          us-east-1 (États-Unis). Ce transfert hors UE est encadré par les{' '}
+          Vos données de réservation sont stockées sur des serveurs AWS situés en{' '}
+          <strong>Irlande</strong>, et le site est hébergé par Hostinger International Limited,
+          basée à <strong>Chypre</strong> — deux États membres de l'Union Européenne. Aucun
+          transfert de vos données hors UE n'a lieu dans le cadre normal du fonctionnement du
+          service.
+        </P>
+        <P>
+          Certains de nos prestataires techniques (Supabase Inc., Resend) sont des sociétés dont
+          le siège social est situé hors de l'Union Européenne. Dans la mesure où un accès
+          résiduel à vos données resterait possible depuis un pays tiers dans le cadre du support
+          technique de ces prestataires, un tel accès est encadré par les{' '}
           <strong>Clauses Contractuelles Types (CCT)</strong> adoptées par la Commission
           européenne (décision d'exécution 2021/914), garantissant un niveau de protection
           adéquat de vos données.
