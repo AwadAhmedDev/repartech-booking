@@ -56,8 +56,13 @@ jobs:
         run: |
           set -euo pipefail
 
+          # Hostinger's file-storage servers occasionally take too long to
+          # accept a new connection from GitHub's runners — retry with a
+          # bounded connect timeout instead of hanging on curl's default.
+          CURL_RETRY=(--retry 4 --retry-delay 5 --retry-all-errors --connect-timeout 15 --max-time 90)
+
           echo "Requesting an upload URL..."
-          RESP=$(curl -sS -f -X POST "https://developers.hostinger.com/api/hosting/v1/files/upload-urls" \
+          RESP=$(curl -sS -f "${CURL_RETRY[@]}" -X POST "https://developers.hostinger.com/api/hosting/v1/files/upload-urls" \
             -H "Authorization: Bearer $HOSTINGER_API_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{\"username\":\"$HOSTINGER_USERNAME\",\"domain\":\"$HOSTINGER_DOMAIN\"}")
@@ -68,18 +73,18 @@ jobs:
           SIZE=$(stat -c%s repatek-deploy.zip)
 
           echo "Creating upload session..."
-          curl -sS -f -X POST "$URL/repatek-deploy.zip?override=true" \
+          curl -sS -f "${CURL_RETRY[@]}" -X POST "$URL/repatek-deploy.zip?override=true" \
             -H "X-Auth: $AUTH" -H "X-Auth-Rest: $REST_AUTH" \
             -H "Tus-Resumable: 1.0.0" -H "Upload-Length: $SIZE" -H "Upload-Offset: 0"
 
           echo "Uploading archive ($SIZE bytes)..."
-          curl -sS -f -X PATCH "$URL/repatek-deploy.zip?override=true" \
+          curl -sS -f "${CURL_RETRY[@]}" -X PATCH "$URL/repatek-deploy.zip?override=true" \
             -H "X-Auth: $AUTH" -H "X-Auth-Rest: $REST_AUTH" \
             -H "Tus-Resumable: 1.0.0" -H "Content-Type: application/offset+octet-stream" \
             -H "Upload-Offset: 0" --data-binary "@repatek-deploy.zip"
 
           echo "Deploying archive..."
-          curl -sS -f -X POST "https://developers.hostinger.com/api/hosting/v1/accounts/$HOSTINGER_USERNAME/websites/$HOSTINGER_DOMAIN/deploy" \
+          curl -sS -f "${CURL_RETRY[@]}" -X POST "https://developers.hostinger.com/api/hosting/v1/accounts/$HOSTINGER_USERNAME/websites/$HOSTINGER_DOMAIN/deploy" \
             -H "Authorization: Bearer $HOSTINGER_API_TOKEN" \
             -H "Content-Type: application/json" \
             -d '{"archive_path":"repatek-deploy.zip"}'
