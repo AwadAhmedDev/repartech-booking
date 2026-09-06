@@ -75,8 +75,9 @@ export function CGVPage() {
 
       <Section title="5. Modalités de paiement">
         <P>
-          Le paiement s'effectue <strong>au comptant, en atelier, à la restitution de l'appareil</strong>.
-          RepaTek accepte les modes de paiement suivants :
+          Le paiement s'effectue <strong>au comptant, à l'issue de la prestation</strong> — en atelier
+          lors de la restitution de l'appareil, ou directement sur place lors d'une intervention à
+          domicile. RepaTek accepte les modes de paiement suivants :
         </P>
         <Ul
           items={[
