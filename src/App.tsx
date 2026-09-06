@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { ScrollToTop } from './components/ScrollToTop'
 import { PublicLayout } from './components/layout/PublicLayout'
 import { HomePage } from './pages/HomePage'
 import { MentionsLegalesPage } from './pages/legal/MentionsLegalesPage'
@@ -25,6 +26,7 @@ function App() {
   return (
     <ErrorBoundary>
       <AdminAuthProvider>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={withPublicLayout(<HomePage />)} />
 

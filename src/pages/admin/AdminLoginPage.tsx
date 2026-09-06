@@ -49,7 +49,7 @@ export function AdminLoginPage() {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@northbridgeit.com"
+                placeholder="admin@repatek.fr"
                 className="w-full rounded-lg border border-white/10 bg-white/[0.04] py-2.5 pl-9 pr-3.5 text-sm text-white placeholder:text-white/30 outline-none transition-colors focus:border-cyan-400/60"
               />
             </div>
