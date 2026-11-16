@@ -42,9 +42,8 @@ export function WhyChooseUs() {
             <div className="mt-12 flex flex-col gap-0 divide-y divide-slate-200">
               {REASONS.map((reason, idx) => (
                 <div key={reason.title} className="flex gap-6 py-7 first:pt-0 last:pb-0">
-                  <span className="font-display text-4xl font-bold leading-none text-blue-600/[0.18] select-none w-10 shrink-0 pt-0.5">
-                    {String(idx + 1).padStart(2, '0')}
-                  </span>
+                  {/* numéro décoratif dessiné en CSS (pas du texte à lire) */}
+                    <span aria-hidden="true" data-n={String(idx + 1).padStart(2, '0')} className="font-display text-4xl font-bold leading-none text-blue-600/[0.18] select-none w-10 shrink-0 pt-0.5 before:content-[attr(data-n)]" />
                   <div>
                     <h3 className="text-sm font-semibold text-slate-900">{reason.title}</h3>
                     <p className="mt-1.5 text-sm leading-relaxed text-slate-500">{reason.description}</p>

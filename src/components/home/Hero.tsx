@@ -65,7 +65,8 @@ export function Hero() {
             <div className="absolute inset-0 overflow-hidden rounded-2xl shadow-[0_24px_70px_-30px_rgba(15,23,42,0.55)] ring-1 ring-slate-900/5">
               <img
                 src={images.heroWorkstation}
-                alt="Technicien RepaTek effectuant un diagnostic sur un ordinateur portable"
+                alt="Diagnostic d’un ordinateur portable sur un poste de réparation"
+                fetchPriority="high"
                 className="h-full w-full object-cover"
               />
               {/* Gradient overlay */}
@@ -82,7 +83,7 @@ export function Hero() {
                   <div className="flex items-center gap-2.5">
                     <MapPin className="h-4 w-4 shrink-0 text-white/60" />
                     <span className="text-sm font-medium text-white/90">
-                      Lun – Sam, 9h – 18h · Service à domicile disponible
+                      Lun – Ven 9h – 18h, Sam 10h – 15h · Service à domicile
                     </span>
                   </div>
                 </div>
@@ -98,7 +99,7 @@ export function Hero() {
         <div className="relative overflow-hidden rounded-2xl ring-1 ring-slate-900/5">
           <img
             src={images.heroWorkstation}
-            alt="Technicien RepaTek"
+            alt="Réparation d’un ordinateur portable"
             className="h-60 w-full object-cover sm:h-72"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
@@ -109,7 +110,7 @@ export function Hero() {
             </span>
             <span className="flex items-center gap-2 text-sm font-medium text-white/90">
               <MapPin className="h-4 w-4 shrink-0 text-white/60" />
-              Lun – Sam, 9h – 18h
+              Lun – Ven 9h – 18h, Sam 10h – 15h
             </span>
           </div>
         </div>

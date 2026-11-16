@@ -1,3 +1,4 @@
+import { usePageMeta } from '../../lib/seo'
 import type { ReactNode } from 'react'
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export function LegalLayout({ title, subtitle, updated, children }: Props) {
+  usePageMeta(title)
   return (
     <div className="bg-white pt-24 pb-28 lg:pt-32">
       <div className="mx-auto max-w-3xl px-6 lg:px-8">

@@ -95,7 +95,7 @@ export function Services({ onSelectService }: { onSelectService: (serviceId: str
                         <p className="font-display text-lg font-bold text-slate-900">
                           {formatPriceRange(service.price, service.price_max)}
                         </p>
-                        <p className="mt-0.5 text-xs text-slate-400">
+                        <p className="mt-0.5 text-xs text-slate-500">
                           {formatDuration(service.duration_minutes)}
                         </p>
                       </div>

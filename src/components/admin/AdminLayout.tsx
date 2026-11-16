@@ -1,3 +1,4 @@
+import { usePageMeta } from '../../lib/seo'
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Navigate, Outlet, useLocation } from 'react-router-dom'
 import {
@@ -75,6 +76,7 @@ function SidebarNav({ onNavClick }: { onNavClick?: () => void }) {
 }
 
 export function AdminLayout() {
+  usePageMeta('Administration', { noindex: true })
   const { session, isAdmin, loading, signOut, user } = useAdminAuth()
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()

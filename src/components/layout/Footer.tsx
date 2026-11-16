@@ -22,7 +22,7 @@ export function Footer() {
             <p className="font-display text-xl font-bold text-white">
               Un problème informatique ? On est là.
             </p>
-            <p className="mt-1 text-sm text-blue-100">
+            <p className="mt-1 text-sm text-white">
               Diagnostic offert · Réponse sous 24 h · Devis sans engagement
             </p>
           </div>
@@ -85,7 +85,7 @@ export function Footer() {
                 </li>
                 <li className="flex justify-between gap-4">
                   <span>Samedi</span>
-                  <span className="text-white/70">10h – 16h</span>
+                  <span className="text-white/70">10h – 15h</span>
                 </li>
                 <li className="flex justify-between gap-4">
                   <span>Dimanche</span>
@@ -126,7 +126,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
             <p>&copy; {year} {settings?.business_name ?? 'RepaTek'}. Tous droits réservés.</p>
             <div className="flex flex-wrap gap-x-5 gap-y-2">
               <Link to="/mentions-legales" className="transition-colors hover:text-white">Mentions Légales</Link>

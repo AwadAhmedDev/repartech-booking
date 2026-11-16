@@ -28,7 +28,7 @@ export function Navbar() {
           <div className="flex items-center gap-6 text-xs text-white/90">
             <span className="flex items-center gap-1.5">
               <Clock className="h-3 w-3" />
-              Lun – Sam, 9h – 18h
+              Lun – Ven 9h – 18h, Sam 10h – 15h
             </span>
             {settings?.business_address && (
               <span className="flex items-center gap-1.5">

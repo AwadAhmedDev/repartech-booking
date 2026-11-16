@@ -59,15 +59,13 @@ export function ProcessSection() {
               key={step.number}
               className="group relative overflow-hidden bg-slate-900 p-10 transition-colors hover:bg-slate-800"
             >
-              <span className="absolute right-6 bottom-4 font-display text-[7rem] font-bold leading-none text-white/[0.07] select-none transition-all group-hover:text-white/[0.12]">
-                {step.number}
-              </span>
+              <span aria-hidden="true" data-n={step.number} className="absolute right-6 bottom-4 font-display text-[7rem] font-bold leading-none text-white/[0.07] select-none transition-all group-hover:text-white/[0.12] before:content-[attr(data-n)]" />
 
               <div className="flex items-start justify-between gap-4">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-blue-400">
                   <step.icon className="h-5 w-5" strokeWidth={1.75} />
                 </span>
-                <span className="rounded-full border border-white/10 px-3 py-1 text-xs font-medium text-white/40">
+                <span className="rounded-full border border-white/10 px-3 py-1 text-xs font-medium text-white/75">
                   {step.duration}
                 </span>
               </div>

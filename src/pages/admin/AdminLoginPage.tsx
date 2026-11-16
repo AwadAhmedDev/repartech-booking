@@ -1,9 +1,11 @@
+import { usePageMeta } from '../../lib/seo'
 import { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { Cpu, Loader2, Lock, Mail } from 'lucide-react'
 import { useAdminAuth } from '../../contexts/AdminAuthContext'
 
 export function AdminLoginPage() {
+  usePageMeta('Connexion administrateur', { noindex: true })
   const { session, loading, signIn } = useAdminAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

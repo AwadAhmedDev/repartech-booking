@@ -24,7 +24,7 @@ export function About() {
             <div className="overflow-hidden rounded-2xl">
               <img
                 src={images.supportTeam}
-                alt="Techniciens de support RepaTek dans un environnement de bureau moderne"
+                alt="Équipe de support informatique dans un bureau"
                 className="h-[520px] w-full object-cover"
               />
             </div>

@@ -293,7 +293,7 @@ export function BookingSection({
                       </span>
                       <span
                         className={`hidden text-xs font-medium sm:inline ${
-                          isCurrent ? 'text-slate-900' : 'text-slate-400'
+                          isCurrent ? 'text-slate-900' : 'text-slate-500'
                         }`}
                       >
                         {s.label}

@@ -6,8 +6,10 @@ import { WhyChooseUs } from '../components/home/WhyChooseUs'
 import { About } from '../components/home/About'
 import { ProcessSection } from '../components/home/ProcessSection'
 import { BookingSection } from '../components/booking/BookingSection'
+import { usePageMeta } from '../lib/seo'
 
 export function HomePage() {
+  usePageMeta()
   const [preselectedServiceId, setPreselectedServiceId] = useState<string | null>(null)
   const [selectionToken, setSelectionToken] = useState(0)
 
