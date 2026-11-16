@@ -30,29 +30,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Add server rules (www redirect, SPA routes, real 404)
-        run: |
-          cat > dist/.htaccess <<'EOF'
-          # Adresse inconnue : vraie réponse 404 (et non la page d'accueil) pour Google
-          ErrorDocument 404 /404.html
-          <IfModule mod_rewrite.c>
-            RewriteEngine On
-            RewriteBase /
-            # Une seule adresse officielle : www.repatek.fr -> repatek.fr
-            RewriteCond %{HTTP_HOST} ^www\.repatek\.fr$ [NC]
-            RewriteRule ^(.*)$ https://repatek.fr/$1 [R=301,L]
-            RewriteRule ^index\.html$ - [L]
-            # Seules les pages qui existent dans l'application sont servies par index.html ;
-            # à mettre à jour si une nouvelle page publique est ajoutée.
-            RewriteCond %{REQUEST_FILENAME} !-f
-            RewriteCond %{REQUEST_FILENAME} !-d
-            RewriteRule ^(mentions-legales|confidentialite|cgu|cgv|admin(/.*)?)/?$ /index.html [L]
-          </IfModule>
-          # Pages HTML toujours revalidées (évite d'anciennes versions après un déploiement)
-          <FilesMatch "\.html$">
-            Header set Cache-Control "no-cache"
-          </FilesMatch>
-          EOF
+      # Plan du site + règles serveur (www -> sans www, pages de l'appli, vraie 404),
+      # avec une page par service actif en base. Nouvelle page publique : l'ajouter dans ce script.
+      - name: Generate sitemap and server rules
+        run: node scripts/seo-files.mjs
 
       - name: Package build as a zip archive
         run: |

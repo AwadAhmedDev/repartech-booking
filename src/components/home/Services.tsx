@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { slugify } from '../../lib/slug'
 import { ArrowRight, CheckCircle2, Loader2, RotateCw } from 'lucide-react'
 import { fetchActiveServices } from '../../lib/api'
 import { formatDuration, formatPriceRange } from '../../lib/format'
@@ -89,6 +91,13 @@ export function Services({ onSelectService }: { onSelectService: (serviceId: str
                     <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-500">
                       {service.description}
                     </p>
+                    <Link
+                      to={`/services/${slugify(service.name)}`}
+                      className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-blue-700 hover:underline"
+                    >
+                      En savoir plus<span className="sr-only"> : {service.name}</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
 
                     <div className="mt-6 flex items-end justify-between border-t border-slate-100 pt-5">
                       <div>

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Hero } from '../components/home/Hero'
 import { TrustBar } from '../components/home/TrustBar'
 import { Services } from '../components/home/Services'
@@ -18,6 +19,12 @@ export function HomePage() {
     setSelectionToken((prev) => prev + 1)
     document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })
   }
+
+  // Lien « Réserver ce service » d'une page service : /?service=<id>#booking
+  const serviceFromUrl = useSearchParams()[0].get('service')
+  useEffect(() => {
+    if (serviceFromUrl) handleSelectService(serviceFromUrl)
+  }, [serviceFromUrl])
 
   return (
     <>

@@ -4,9 +4,10 @@ import { Clock, MapPin, Menu, Phone, X } from 'lucide-react'
 import { useBusinessSettings } from '../../contexts/BusinessSettingsContext'
 
 const NAV_LINKS = [
-  { label: 'Services', href: '#services' },
-  { label: 'Pourquoi Nous', href: '#why-us' },
-  { label: 'À Propos', href: '#about' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Pourquoi Nous', href: '/#why-us' },
+  { label: 'À Propos', href: '/#about' },
+  { label: 'FAQ', href: '/faq' },
 ]
 
 export function Navbar() {
@@ -63,23 +64,23 @@ export function Navbar() {
 
           <div className="hidden items-center gap-8 lg:flex">
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.href}
-                href={link.href}
+                to={link.href}
                 className="text-sm font-medium text-white/60 transition-colors hover:text-white"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
 
           <div className="hidden items-center gap-3 lg:flex">
-            <a
-              href="#booking"
+            <Link
+              to="/#booking"
               className="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
             >
               Prendre Rendez-vous
-            </a>
+            </Link>
           </div>
 
           <button
@@ -98,14 +99,14 @@ export function Navbar() {
           <div id="mobile-menu" className="border-t border-white/10 bg-slate-900 px-6 pb-6 lg:hidden">
             <div className="flex flex-col gap-1 pt-4">
               {NAV_LINKS.map((link) => (
-                <a
+                <Link
                   key={link.href}
-                  href={link.href}
+                  to={link.href}
                   onClick={() => setOpen(false)}
                   className="rounded-lg px-3 py-2.5 text-base font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
               {settings?.business_phone && (
                 <a
@@ -116,13 +117,13 @@ export function Navbar() {
                   {settings.business_phone}
                 </a>
               )}
-              <a
-                href="#booking"
+              <Link
+                to="/#booking"
                 onClick={() => setOpen(false)}
                 className="mt-3 rounded-lg bg-blue-600 px-5 py-3 text-center text-sm font-semibold text-white hover:bg-blue-700"
               >
                 Prendre Rendez-vous
-              </a>
+              </Link>
             </div>
           </div>
         )}

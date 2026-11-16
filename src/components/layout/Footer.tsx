@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom'
 import { useBusinessSettings } from '../../contexts/BusinessSettingsContext'
 
 const QUICK_LINKS = [
-  { label: 'Services', href: '#services' },
-  { label: 'Pourquoi Nous Choisir', href: '#why-us' },
-  { label: 'À Propos', href: '#about' },
-  { label: 'Réserver un Rendez-vous', href: '#booking' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Pourquoi Nous Choisir', href: '/#why-us' },
+  { label: 'À Propos', href: '/#about' },
+  { label: 'Questions fréquentes', href: '/faq' },
+  { label: 'Réserver un Rendez-vous', href: '/#booking' },
 ]
 
 export function Footer() {
@@ -26,12 +27,12 @@ export function Footer() {
               Diagnostic offert · Réponse sous 24 h · Devis sans engagement
             </p>
           </div>
-          <a
-            href="#booking"
+          <Link
+            to="/#booking"
             className="shrink-0 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-50"
           >
             Prendre Rendez-vous
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -59,15 +60,15 @@ export function Footer() {
 
             {/* Quick links */}
             <div>
-              <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-white/70">
+              <h2 className="font-display text-sm font-semibold uppercase tracking-wider text-white/70">
                 Navigation
-              </h4>
+              </h2>
               <ul className="mt-4 space-y-3 text-sm text-white/50">
                 {QUICK_LINKS.map((link) => (
                   <li key={link.href}>
-                    <a href={link.href} className="transition-colors hover:text-white">
+                    <Link to={link.href} className="transition-colors hover:text-white">
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -75,9 +76,9 @@ export function Footer() {
 
             {/* Hours */}
             <div>
-              <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-white/70">
+              <h2 className="font-display text-sm font-semibold uppercase tracking-wider text-white/70">
                 Horaires
-              </h4>
+              </h2>
               <ul className="mt-4 space-y-2.5 text-sm text-white/50">
                 <li className="flex justify-between gap-4">
                   <span>Lundi – Vendredi</span>
@@ -96,9 +97,9 @@ export function Footer() {
 
             {/* Contact */}
             <div>
-              <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-white/70">
+              <h2 className="font-display text-sm font-semibold uppercase tracking-wider text-white/70">
                 Contact
-              </h4>
+              </h2>
               <ul className="mt-4 space-y-3 text-sm text-white/50">
                 {settings?.business_phone && (
                   <li className="flex items-start gap-2.5">

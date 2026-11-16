@@ -4,6 +4,8 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { ScrollToTop } from './components/ScrollToTop'
 import { PublicLayout } from './components/layout/PublicLayout'
 import { HomePage } from './pages/HomePage'
+import { ServicePage } from './pages/ServicePage'
+import { FaqPage } from './pages/FaqPage'
 import { MentionsLegalesPage } from './pages/legal/MentionsLegalesPage'
 import { PolitiqueConfidentialitePage } from './pages/legal/PolitiqueConfidentialitePage'
 import { CGUPage } from './pages/legal/CGUPage'
@@ -29,6 +31,9 @@ function App() {
         <ScrollToTop />
         <Routes>
           <Route path="/" element={withPublicLayout(<HomePage />)} />
+
+          <Route path="/services/:slug" element={withPublicLayout(<ServicePage />)} />
+          <Route path="/faq" element={withPublicLayout(<FaqPage />)} />
 
           {/* Legal pages */}
           <Route path="/mentions-legales" element={withPublicLayout(<MentionsLegalesPage />)} />
