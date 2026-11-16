@@ -195,7 +195,7 @@ function buildConfirmedEmail(p: {
       <p style="margin:0 0 20px;color:rgba(255,255,255,0.8);font-size:15px;">Bonjour <strong>${firstName}</strong>,</p>
       <p style="margin:0 0 24px;color:rgba(255,255,255,0.6);line-height:1.65;font-size:14px;">
         Bonne nouvelle ! Votre rendez-vous a été <strong style="color:#4ade80;">confirmé</strong>.
-        Nous vous attendons à la date et à l'heure indiquées ci-dessous.
+        Je viendrai chez vous à la date et à l'heure indiquées ci-dessous.
       </p>
 
       <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:20px 20px 12px;">
