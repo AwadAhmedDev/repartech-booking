@@ -5,7 +5,7 @@ import { usePageMeta } from '../lib/seo'
 const FAQ: { q: string; a: string }[] = [
   {
     q: 'Où intervenez-vous ?',
-    a: "Nous sommes basés aux Ulis (91940) et intervenons aux Ulis et en Essonne, à domicile ou en atelier. Les petits problèmes logiciels peuvent aussi être réglés à distance.",
+    a: "RepaTek est basé aux Ulis (91940) : je me déplace à domicile ou dans vos locaux, aux Ulis et en Essonne. Il n'y a pas d'atelier où déposer votre appareil. Les petits problèmes logiciels peuvent aussi être réglés à distance.",
   },
   {
     q: "Quels sont vos horaires ?",
@@ -21,7 +21,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'Le diagnostic est-il payant ?',
-    a: "Le diagnostic complet est un service à part entière, mais son montant est déduit du prix de la réparation si vous acceptez le devis.",
+    a: "Le premier diagnostic, qui sert à établir le devis, est offert. Pour une panne difficile, l'analyse approfondie (service « Diagnostic système & panne ») est payante, mais son montant est déduit du prix de la réparation si vous acceptez le devis.",
   },
   {
     q: 'Les prix affichés sont-ils définitifs ?',

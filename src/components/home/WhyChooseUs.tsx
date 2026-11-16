@@ -16,9 +16,9 @@ const REASONS = [
     description: 'Tarifs forfaitaires sans frais cachés. Vous approuvez le coût avant toute réparation.',
   },
   {
-    title: 'Techniciens Expérimentés et Rigoureux',
+    title: 'Un Seul Interlocuteur, Qui Se Déplace',
     description:
-      'Expérimentés sur du matériel grand public et professionnel. Chaque intervention est documentée.',
+      "Le même technicien vous répond, se déplace chez vous et suit votre dossier du diagnostic à la réparation.",
   },
 ]
 

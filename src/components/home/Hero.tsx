@@ -18,7 +18,7 @@ export function Hero() {
           <div className="flex flex-col justify-center">
             <span className="inline-flex w-fit items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-blue-700">
               <ShieldCheck className="h-3.5 w-3.5" />
-              Techniciens expérimentés · Intervention sous 24 h
+              Technicien à domicile · Intervention sous 24 h
             </span>
 
             <h1 className="mt-6 font-display text-[2.6rem] font-bold leading-[1.06] tracking-tight text-slate-900 sm:text-6xl lg:text-[4.25rem]">
@@ -29,7 +29,7 @@ export function Hero() {
             </h1>
 
             <p className="mt-6 max-w-lg text-base leading-relaxed text-slate-600 sm:text-lg">
-              Pannes matérielles, virus, réseaux — nos techniciens expérimentés diagnostiquent et réparent
+              Pannes matérielles, virus, réseaux — votre technicien se déplace chez vous, diagnostique et répare
               vos appareils rapidement, avec un devis clair avant toute intervention.
             </p>
 

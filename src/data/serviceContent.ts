@@ -196,7 +196,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     faq: [
       {
         q: 'Comment se passe une intervention à distance ?',
-        a: 'Avec votre accord, le technicien se connecte à votre ordinateur via un logiciel de prise en main à distance et intervient pendant que vous suivez à l\'écran.',
+        a: 'Avec votre accord, je me connecte à votre ordinateur via un logiciel de prise en main à distance et intervient pendant que vous suivez à l\'écran.',
       },
     ],
   },

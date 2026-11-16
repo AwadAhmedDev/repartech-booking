@@ -24,7 +24,7 @@ export function Footer() {
               Un problème informatique ? On est là.
             </p>
             <p className="mt-1 text-sm text-white">
-              Diagnostic offert · Réponse sous 24 h · Devis sans engagement
+              Déplacement à domicile · Réponse sous 24 h · Devis sans engagement
             </p>
           </div>
           <Link

@@ -5,7 +5,7 @@ export function CGVPage() {
     <LegalLayout
       subtitle="Conditions de vente"
       title="Conditions Générales de Vente"
-      updated="29 juin 2026"
+      updated="17 novembre 2026"
     >
       <Section title="1. Parties et champ d'application">
         <P>
@@ -75,9 +75,9 @@ export function CGVPage() {
 
       <Section title="5. Modalités de paiement">
         <P>
-          Le paiement s'effectue <strong>au comptant, à l'issue de la prestation</strong> — en atelier
-          lors de la restitution de l'appareil, ou directement sur place lors d'une intervention à
-          domicile. RepaTek accepte les modes de paiement suivants :
+          Le paiement s'effectue <strong>au comptant, à l'issue de la prestation</strong> — directement
+          sur place à la fin de l'intervention, à domicile ou dans les locaux du Client (ou à
+          distance pour une assistance en ligne). RepaTek accepte les modes de paiement suivants :
         </P>
         <Ul
           items={[
@@ -110,7 +110,7 @@ export function CGVPage() {
         <P>
           <strong>Garantie contractuelle RepaTek (30 jours) :</strong> Toutes les réparations
           effectuées par RepaTek sont couvertes par une garantie de 30 jours calendaires à
-          compter de la date de restitution, portant sur la qualité de la main-d'œuvre et des
+          compter de la date de fin de l'intervention, portant sur la qualité de la main-d'œuvre et des
           pièces installées. Cette garantie ne couvre pas les dommages accidentels, les actes de
           l'utilisateur ou les pannes non liées à l'intervention effectuée.
         </P>

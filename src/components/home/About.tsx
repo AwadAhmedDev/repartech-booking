@@ -2,7 +2,7 @@ import { ArrowRight } from 'lucide-react'
 import { images } from '../../data/images'
 
 const HIGHLIGHTS = [
-  { value: 'Qualifié', label: 'Technicien expérimenté et passionné' },
+  { value: 'À domicile', label: 'Je me déplace chez vous, aux Ulis et en Essonne' },
   { value: 'Polyvalent', label: "Particuliers, PME et réseaux d'entreprise" },
   { value: 'Fiable', label: '30 jours de garantie sur nos réparations' },
 ]
@@ -23,8 +23,8 @@ export function About() {
           <div className="relative order-2 lg:order-1">
             <div className="overflow-hidden rounded-2xl">
               <img
-                src={images.supportTeam}
-                alt="Équipe de support informatique dans un bureau"
+                src={images.technicianRepair}
+                alt="Réparation d'un ordinateur"
                 className="h-[520px] w-full object-cover"
               />
             </div>
@@ -47,17 +47,17 @@ export function About() {
               Notre Histoire
             </span>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-              Un Partenaire Technologique, Pas Seulement un Atelier de Réparation
+              Votre Technicien Informatique, Directement Chez Vous
             </h2>
             <p className="mt-5 text-base leading-relaxed text-slate-600">
-              RepaTek a été conçu pour offrir aux particuliers et aux entreprises un endroit unique
-              et fiable pour la réparation informatique et le support technologique. Nos techniciens
-              interviennent sur les appareils grand public, les postes de travail professionnels et les
+              RepaTek, c'est un technicien indépendant basé aux Ulis qui se déplace chez les particuliers
+              et les entreprises pour la réparation informatique et le support technologique. J'interviens
+              sur les appareils grand public, les postes de travail professionnels et les
               environnements réseau complets.
             </p>
             <p className="mt-4 text-base leading-relaxed text-slate-600">
               Qu'il s'agisse d'un écran fissuré, d'une infection par logiciel malveillant, d'un disque
-              dur défaillant ou d'un réseau d'entreprise à surveiller, nous traitons chaque
+              dur défaillant ou d'un réseau d'entreprise à surveiller, je traite chaque
               intervention avec le même niveau de professionnalisme et de transparence.
             </p>
 

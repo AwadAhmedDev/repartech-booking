@@ -23,15 +23,15 @@ const STEPS = [
     title: 'Vérifier',
     duration: '~30 min',
     description:
-      "Tests rigoureux post-réparation pour s'assurer que tout fonctionne parfaitement avant la restitution.",
+      "Tests rigoureux post-réparation pour s'assurer que tout fonctionne parfaitement avant mon départ.",
   },
   {
     icon: Package,
     number: '04',
-    title: 'Restituer',
-    duration: 'Immédiat',
+    title: 'Expliquer',
+    duration: '~10 min',
     description:
-      "Votre appareil vous est rendu en parfait état, accompagné d'un rapport de service complet.",
+      "Je vous explique ce qui a été fait, avec des conseils pour éviter que la panne revienne. Vous réglez sur place.",
   },
 ]
 

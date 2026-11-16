@@ -124,7 +124,7 @@ export function Services({ onSelectService }: { onSelectService: (serviceId: str
 
             <p className="mt-8 text-center text-sm text-slate-500">
               <CheckCircle2 className="mr-1.5 inline h-4 w-4 align-text-bottom text-blue-600" />
-              Toutes les réparations incluent un diagnostic offert et un devis sans engagement.
+              Toutes les réparations commencent par un premier diagnostic offert et un devis sans engagement.
             </p>
           </>
         )}

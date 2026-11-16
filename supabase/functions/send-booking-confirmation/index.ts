@@ -205,7 +205,7 @@ function buildCustomerEmail(p: {
     'Votre rendez-vous a bien été reçu',
     `<p style="margin:0 0 20px;color:rgba(255,255,255,0.8);font-size:15px;">Bonjour <strong>${firstName}</strong>,</p>
     <p style="margin:0 0 24px;color:rgba(255,255,255,0.6);line-height:1.65;font-size:14px;">
-      Nous avons bien reçu votre demande. Un membre de notre équipe vous contactera prochainement
+      Nous avons bien reçu votre demande. Je vous contacterai prochainement
       pour confirmer votre créneau.
     </p>
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:20px 20px 12px;">
@@ -221,7 +221,7 @@ function buildCustomerEmail(p: {
       <p style="margin:0;color:#f59e0b;font-size:13px;">⏳ Statut : <strong>En attente de confirmation</strong></p>
     </div>
     <p style="margin:24px 0 0;color:rgba(255,255,255,0.4);font-size:13px;line-height:1.6;">
-      Des questions ? Répondez à cet e-mail — notre équipe vous contactera rapidement.
+      Des questions ? Répondez à cet e-mail, je vous recontacterai rapidement.
     </p>`,
   )
 }

@@ -143,8 +143,8 @@ function ServiceDetails({ service }: { service: Service }) {
         <h2 className="font-display text-xl font-semibold text-slate-900">Comment ça se passe ?</h2>
         <ol className="mt-4 list-decimal space-y-2 pl-5 text-slate-700 marker:font-semibold marker:text-blue-600">
           <li>Vous réservez un créneau en ligne ou par téléphone.</li>
-          <li>Le technicien établit un diagnostic et vous remet un devis gratuit, sans engagement.</li>
-          <li>Après votre accord, l'intervention est réalisée à domicile, en atelier ou à distance selon le besoin.</li>
+          <li>Je me déplace chez vous, j'établis un diagnostic et vous remets un devis gratuit, sans engagement.</li>
+          <li>Après votre accord, je réalise l'intervention sur place (ou à distance pour les problèmes logiciels simples).</li>
           <li>Vous réglez à la fin de la prestation (espèces ou carte) ; la réparation est garantie 30 jours.</li>
         </ol>
       </section>
