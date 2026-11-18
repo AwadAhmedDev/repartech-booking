@@ -27,6 +27,8 @@ const STEP_LABELS: { key: Step; label: string }[] = [
 
 const DAYS_AHEAD = 21
 
+const EMPTY_FORM: BookingFormValues = { name: '', email: '', phone: '', notes: '', address: '', website: '' }
+
 export function BookingSection({
   preselectedServiceId,
   selectionToken,
@@ -49,7 +51,7 @@ export function BookingSection({
   const [loadingSlots, setLoadingSlots] = useState(false)
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null)
 
-  const [formValues, setFormValues] = useState<BookingFormValues>({ name: '', email: '', phone: '', notes: '' })
+  const [formValues, setFormValues] = useState<BookingFormValues>(EMPTY_FORM)
   const [formErrors, setFormErrors] = useState<Partial<Record<keyof BookingFormValues, string>>>({})
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -168,7 +170,13 @@ export function BookingSection({
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValues.email)) {
       errors.email = 'Veuillez saisir une adresse e-mail valide.'
     }
-    if (!formValues.phone.trim()) errors.phone = 'Le numéro de téléphone est requis.'
+    const phone = formValues.phone.trim()
+    if (!phone) errors.phone = 'Le numéro de téléphone est requis.'
+    // Même règle que book_appointment() côté serveur
+    else if (!/^\+?[0-9 ().-]+$/.test(phone) || !/^\d{8,15}$/.test(phone.replace(/\D/g, '')))
+      errors.phone = 'Veuillez saisir un numéro de téléphone valide.'
+    if (formValues.name.trim().length === 1) errors.name = 'Veuillez saisir votre nom complet.'
+    if (formValues.address.trim().length < 5) errors.address = "L'adresse d'intervention est requise."
 
     setFormErrors(errors)
     return Object.keys(errors).length === 0
@@ -177,6 +185,11 @@ export function BookingSection({
   async function handleSubmit() {
     if (!selectedService || !selectedDate || !selectedSlot) return
     if (!validateForm()) return
+    // Piège rempli : robot. On affiche le succès sans rien enregistrer.
+    if (formValues.website) {
+      setStep('success')
+      return
+    }
 
     setSubmitting(true)
     setSubmitError(null)
@@ -190,6 +203,7 @@ export function BookingSection({
       const trimmedEmail = formValues.email.trim()
       const trimmedPhone = formValues.phone.trim()
       const trimmedNotes = formValues.notes.trim() || null
+      const trimmedAddress = formValues.address.trim()
 
       const appointmentId = await createAppointment({
         service_id: selectedService.id,
@@ -197,6 +211,7 @@ export function BookingSection({
         email: trimmedEmail,
         phone: trimmedPhone,
         notes: trimmedNotes,
+        address: trimmedAddress,
         appointment_date: appointmentDate,
         start_time: startTime,
       })
@@ -213,6 +228,7 @@ export function BookingSection({
         name: trimmedName,
         email: trimmedEmail,
         phone: trimmedPhone,
+        address: trimmedAddress,
         notes: formValues.notes.trim(),
       })
       setStep('success')
@@ -236,7 +252,7 @@ export function BookingSection({
     setSelectedServiceId(null)
     setSelectedDate(null)
     setSelectedSlot(null)
-    setFormValues({ name: '', email: '', phone: '', notes: '' })
+    setFormValues(EMPTY_FORM)
     setFormErrors({})
     setSubmitError(null)
     setSummary(null)

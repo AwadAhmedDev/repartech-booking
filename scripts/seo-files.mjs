@@ -58,6 +58,24 @@ ErrorDocument 404 /404.html
 <FilesMatch "\\.html$">
   Header set Cache-Control "no-cache"
 </FilesMatch>
+# En-têtes de sécurité. Nouvelle source externe (images, API, script) : l'ajouter à la CSP.
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  Header always set X-Frame-Options "DENY"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com; font-src 'self'; connect-src 'self' ${url} ${url.replace('https://', 'wss://')}; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+</IfModule>
+`,
+)
+
+// Fichiers de /assets : leur nom change à chaque version, on peut les garder 1 an en cache.
+writeFileSync(
+  'dist/assets/.htaccess',
+  `<IfModule mod_headers.c>
+  Header set Cache-Control "public, max-age=31536000, immutable"
+</IfModule>
 `,
 )
 

@@ -43,6 +43,7 @@ export function BusinessSettingsPage() {
         business_address: settings.business_address,
         slot_interval_minutes: settings.slot_interval_minutes,
         booking_notice_hours: settings.booking_notice_hours,
+        travel_buffer_minutes: settings.travel_buffer_minutes,
       })
       setSaved(true)
       setTimeout(() => setSaved(false), 2500)
@@ -134,6 +135,19 @@ export function BusinessSettingsPage() {
               min={0}
               value={settings.booking_notice_hours}
               onChange={(e) => setSettings({ ...settings, booking_notice_hours: Number(e.target.value) })}
+              className="input"
+            />
+          </Field>
+
+          <Field label="Temps de Trajet entre Deux Rendez-vous (minutes)">
+            <input
+              required
+              type="number"
+              min={0}
+              max={240}
+              step={5}
+              value={settings.travel_buffer_minutes}
+              onChange={(e) => setSettings({ ...settings, travel_buffer_minutes: Number(e.target.value) })}
               className="input"
             />
           </Field>

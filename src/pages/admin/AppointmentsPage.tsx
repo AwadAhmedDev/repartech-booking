@@ -146,6 +146,16 @@ export function AppointmentsPage() {
                     {a.services?.name ?? 'Service inconnu'} &middot; {formatDateLong(a.appointment_date)} &middot;{' '}
                     {formatTimeLabel(a.start_time)} – {formatTimeLabel(a.end_time)}
                   </p>
+                  {a.address && (
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(a.address)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-block text-sm text-cyan-300 hover:underline"
+                    >
+                      📍 {a.address}
+                    </a>
+                  )}
                   <div className="mt-3 flex flex-wrap gap-4 text-xs text-white/45">
                     <span>{a.email}</span>
                     <span>{a.phone}</span>

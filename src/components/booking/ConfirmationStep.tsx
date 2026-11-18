@@ -1,4 +1,4 @@
-import { Calendar, CheckCircle2, Clock, Mail, Phone, User, Wrench } from 'lucide-react'
+import { Calendar, CheckCircle2, Clock, Mail, MapPin, Phone, User, Wrench } from 'lucide-react'
 import { formatDateLong, formatTimeLabel } from '../../lib/format'
 
 export interface BookingSummary {
@@ -9,6 +9,7 @@ export interface BookingSummary {
   name: string
   email: string
   phone: string
+  address: string
   notes: string
 }
 
@@ -27,8 +28,8 @@ export function ConfirmationStep({
 
       <h3 className="mt-6 font-display text-2xl font-bold text-slate-900">Rendez-vous Demandé</h3>
       <p className="mt-2 max-w-md text-sm leading-relaxed text-slate-600">
-        Merci, {summary.name.split(' ')[0]} ! Votre demande de service a bien été reçue. Nous vous
-        contacterons prochainement à {summary.email} pour confirmer votre rendez-vous.
+        Merci, {summary.name.split(' ')[0]} ! Votre demande de service a bien été reçue. Je vous
+        contacterai prochainement à {summary.email} pour confirmer votre rendez-vous.
       </p>
 
       <div className="mt-8 w-full max-w-md rounded-2xl border border-slate-200 bg-slate-50 p-6 text-left">
@@ -42,6 +43,7 @@ export function ConfirmationStep({
         <SummaryRow icon={User} label="Nom" value={summary.name} />
         <SummaryRow icon={Mail} label="E-mail" value={summary.email} />
         <SummaryRow icon={Phone} label="Téléphone" value={summary.phone} />
+        <SummaryRow icon={MapPin} label="Adresse" value={summary.address} />
         {summary.notes && (
           <div className="mt-4 border-t border-slate-200 pt-4">
             <p className="text-xs font-medium text-slate-500">Remarques</p>

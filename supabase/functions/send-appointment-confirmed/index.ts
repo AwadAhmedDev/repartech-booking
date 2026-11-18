@@ -80,7 +80,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
 
     const { data: appointment, error: fetchError } = await supabaseAdmin
       .from('appointments')
-      .select('full_name, email, notes, appointment_date, start_time, end_time, services(name)')
+      .select('full_name, email, notes, address, appointment_date, start_time, end_time, services(name)')
       .eq('id', appointment_id)
       .maybeSingle()
 
@@ -96,6 +96,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
     const customerEmail = appointment.email
     const serviceName = (appointment.services as { name: string } | null)?.name ?? 'Service'
     const notes = appointment.notes as string | null
+    const address = appointment.address as string | null
 
     const formattedDate = formatDate(appointment.appointment_date)
     const formattedTime = `${formatTime(appointment.start_time)} – ${formatTime(appointment.end_time)}`
@@ -104,7 +105,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
       from: `${BUSINESS_NAME} <${FROM_EMAIL}>`,
       to: customerEmail,
       subject: `✅ Rendez-vous confirmé — ${serviceName}`,
-      html: buildConfirmedEmail({ customerName, serviceName, formattedDate, formattedTime, notes }),
+      html: buildConfirmedEmail({ customerName, serviceName, formattedDate, formattedTime, notes, address }),
     })
 
     return json({ success: true })
@@ -174,6 +175,7 @@ function buildConfirmedEmail(p: {
   formattedDate: string
   formattedTime: string
   notes: string | null
+  address: string | null
 }): string {
   const safeName = escHtml(p.customerName)
   const firstName = safeName.split(' ')[0] ?? safeName
@@ -204,6 +206,7 @@ function buildConfirmedEmail(p: {
           ${detailRow('Service', escHtml(p.serviceName))}
           ${detailRow('Date', p.formattedDate)}
           ${detailRow('Heure', p.formattedTime)}
+          ${p.address ? detailRow('Adresse', escHtml(p.address)) : ''}
           ${notesRow}
         </table>
       </div>

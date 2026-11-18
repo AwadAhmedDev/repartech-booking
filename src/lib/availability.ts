@@ -10,12 +10,14 @@ interface ExistingAppointment {
   appointment_date: string
   start_time: string
   end_time: string
-  status: AppointmentStatus
+  status?: AppointmentStatus
 }
 
 interface AvailabilitySettings {
   slot_interval_minutes: number
   booking_notice_hours: number
+  /** travel time kept free before and after each appointment (same rule as book_appointment) */
+  travel_buffer_minutes?: number
 }
 
 export function toDateKey(date: Date): string {
@@ -89,10 +91,11 @@ export function getAvailableSlots(params: {
     const dayEnd = combineDateAndTime(date, dayHours.end_time)
     if (!dayStart || !dayEnd || dayEnd <= dayStart) return []
 
-    const earliestBookable = new Date(now.getTime() + settings.booking_notice_hours * 60 * 60 * 1000)
+    const bufferMs = (settings.travel_buffer_minutes ?? 0) * 60_000
+    const earliestBookable =new Date(now.getTime() + settings.booking_notice_hours * 60 * 60 * 1000)
 
     const activeAppointments = existingAppointments.filter(
-      (a) => a.appointment_date === dateKey && a.status !== 'cancelled',
+      (a) => a.appointment_date === dateKey && a.status !== 'cancelled', // get_busy_slots already drops cancelled
     )
 
     const slots: TimeSlot[] = []
@@ -107,8 +110,8 @@ export function getAvailableSlots(params: {
           const existingStart = combineDateAndTime(date, existing.start_time)
           const existingEnd = combineDateAndTime(date, existing.end_time)
           if (!existingStart || !existingEnd) return false
-          // overlap rule: new_start < existing_end AND new_end > existing_start
-          return cursor < existingEnd && slotEnd > existingStart
+          // overlap rule, travel buffer included: new_start < existing_end + buffer AND new_end + buffer > existing_start
+          return cursor.getTime() < existingEnd.getTime() + bufferMs && slotEnd.getTime() + bufferMs > existingStart.getTime()
         })
 
         if (!overlaps) {

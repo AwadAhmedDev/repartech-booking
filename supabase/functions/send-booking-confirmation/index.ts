@@ -53,10 +53,15 @@ Deno.serve(async (req: Request): Promise<Response> => {
       return json({ error: 'appointment_id is required' }, 400)
     }
 
+    // Envoi unique : on marque le rendez-vous avant d'envoyer, de façon atomique.
+    // Un second appel (ou un appel pour une vieille demande) ne renvoie rien.
     const { data: appointment, error: fetchError } = await supabaseAdmin
       .from('appointments')
-      .select('full_name, email, phone, notes, appointment_date, start_time, end_time, services(name)')
+      .update({ booking_email_sent_at: new Date().toISOString() })
       .eq('id', appointment_id)
+      .is('booking_email_sent_at', null)
+      .gt('created_at', new Date(Date.now() - 60 * 60 * 1000).toISOString())
+      .select('full_name, email, phone, notes, address, appointment_date, start_time, end_time, services(name)')
       .maybeSingle()
 
     if (fetchError) {
@@ -64,7 +69,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
       return json({ error: 'Internal error' }, 500)
     }
     if (!appointment) {
-      return json({ error: 'Appointment not found' }, 404)
+      return json({ error: 'Appointment not found or already notified' }, 404)
     }
 
     const customerName = appointment.full_name
@@ -72,6 +77,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
     const customerPhone = appointment.phone
     const serviceName = (appointment.services as { name: string } | null)?.name ?? 'Service'
     const notes = appointment.notes as string | null
+    const address = appointment.address as string | null
 
     const formattedDate = formatDate(appointment.appointment_date)
     const formattedTime = `${formatTime(appointment.start_time)} – ${formatTime(appointment.end_time)}`
@@ -81,7 +87,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
         from: `${BUSINESS_NAME} <${FROM_EMAIL}>`,
         to: customerEmail,
         subject: `Confirmation de rendez-vous — ${serviceName}`,
-        html: buildCustomerEmail({ customerName, serviceName, formattedDate, formattedTime, notes }),
+        html: buildCustomerEmail({ customerName, serviceName, formattedDate, formattedTime, notes, address }),
         reply_to: ADMIN_EMAIL || undefined,
       }),
     ]
@@ -92,7 +98,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
           from: `${BUSINESS_NAME} <${FROM_EMAIL}>`,
           to: ADMIN_EMAIL,
           subject: `Nouvelle demande — ${customerName} · ${serviceName}`,
-          html: buildAdminEmail({ customerName, customerEmail, customerPhone, serviceName, formattedDate, formattedTime, notes }),
+          html: buildAdminEmail({ customerName, customerEmail, customerPhone, serviceName, formattedDate, formattedTime, notes, address }),
         }),
       )
     }
@@ -196,6 +202,7 @@ function buildCustomerEmail(p: {
   formattedDate: string
   formattedTime: string
   notes: string | null
+  address: string | null
 }): string {
   const safeName = escHtml(p.customerName)
   const firstName = safeName.split(' ')[0] ?? safeName
@@ -214,6 +221,7 @@ function buildCustomerEmail(p: {
         ${detailRow('Service', escHtml(p.serviceName))}
         ${detailRow('Date', p.formattedDate)}
         ${detailRow('Heure', p.formattedTime)}
+        ${p.address ? detailRow('Adresse', escHtml(p.address)) : ''}
         ${notesRow}
       </table>
     </div>
@@ -234,6 +242,7 @@ function buildAdminEmail(p: {
   formattedDate: string
   formattedTime: string
   notes: string | null
+  address: string | null
 }): string {
   const notesRow = p.notes ? detailRow('Remarques', escHtml(p.notes), true) : ''
 
@@ -252,6 +261,7 @@ function buildAdminEmail(p: {
         ${detailRow('Service', escHtml(p.serviceName), true)}
         ${detailRow('Date', p.formattedDate)}
         ${detailRow('Heure', p.formattedTime)}
+        ${p.address ? detailRow('Adresse', escHtml(p.address)) : ''}
         ${notesRow}
       </table>
     </div>`,

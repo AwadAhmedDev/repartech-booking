@@ -62,22 +62,15 @@ export async function fetchBlockedDates(): Promise<BlockedDate[]> {
   })
 }
 
-// Returns every non-cancelled appointment that falls within the date range,
-// across all services. The availability engine assumes a single-technician
-// schedule — any booked slot blocks the entire shop regardless of which
-// service it belongs to.
+// Busy time ranges (non-cancelled appointments) in the date range. Single technician:
+// any appointment blocks the schedule. Read through get_busy_slots(), which returns
+// times only — visitors cannot read the appointments table itself (RLS).
 export async function fetchAppointmentsForDateRange(
   startDate: string,
   endDate: string,
-): Promise<{ appointment_date: string; start_time: string; end_time: string; status: AppointmentStatus }[]> {
+): Promise<{ appointment_date: string; start_time: string; end_time: string }[]> {
   return withRetry(async () => {
-    const { data, error } = await supabase
-      .from('appointments')
-      .select('appointment_date, start_time, end_time, status')
-      .neq('status', 'cancelled')
-      .gte('appointment_date', startDate)
-      .lte('appointment_date', endDate)
-
+    const { data, error } = await supabase.rpc('get_busy_slots', { p_from: startDate, p_to: endDate })
     if (error) throw error
     return data ?? []
   })
@@ -108,6 +101,7 @@ export async function createAppointment(input: NewAppointmentInput): Promise<str
     p_notes: input.notes,
     p_appointment_date: input.appointment_date,
     p_start_time: input.start_time,
+    p_address: input.address,
   })
 
   if (error) {

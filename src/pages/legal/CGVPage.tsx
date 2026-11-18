@@ -170,9 +170,7 @@ export function CGVPage() {
         <P>
           Conformément à l'ordonnance n°2015-1033 du 20 août 2015 et au décret d'application
           n°2015-1382 du 30 octobre 2015, le Client peut saisir gratuitement le médiateur
-          de la consommation compétent. La Commission européenne met également à disposition
-          une plateforme de règlement en ligne des litiges (RLL) accessible à :{' '}
-          <strong>ec.europa.eu/consumers/odr</strong>
+          de la consommation compétent.
         </P>
       </Section>
 

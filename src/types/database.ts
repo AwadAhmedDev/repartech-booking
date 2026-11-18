@@ -18,6 +18,8 @@ export interface Appointment {
   email: string
   phone: string
   notes: string | null
+  address: string | null
+  booking_email_sent_at: string | null
   appointment_date: string
   start_time: string
   end_time: string
@@ -52,6 +54,7 @@ export interface BusinessSettings {
   business_address: string
   slot_interval_minutes: number
   booking_notice_hours: number
+  travel_buffer_minutes: number
   created_at: string
 }
 
@@ -69,6 +72,7 @@ export interface NewAppointmentInput {
   email: string
   phone: string
   notes: string | null
+  address: string
   appointment_date: string
   start_time: string
 }

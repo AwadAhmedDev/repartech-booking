@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { lazy, Suspense, type ReactNode } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { ScrollToTop } from './components/ScrollToTop'
@@ -11,14 +11,16 @@ import { PolitiqueConfidentialitePage } from './pages/legal/PolitiqueConfidentia
 import { CGUPage } from './pages/legal/CGUPage'
 import { CGVPage } from './pages/legal/CGVPage'
 import { AdminAuthProvider } from './contexts/AdminAuthContext'
-import { AdminLoginPage } from './pages/admin/AdminLoginPage'
-import { AdminLayout } from './components/admin/AdminLayout'
-import { OverviewPage } from './pages/admin/OverviewPage'
-import { AppointmentsPage } from './pages/admin/AppointmentsPage'
-import { ServicesPage } from './pages/admin/ServicesPage'
-import { BusinessHoursPage } from './pages/admin/BusinessHoursPage'
-import { BlockedDatesPage } from './pages/admin/BlockedDatesPage'
-import { BusinessSettingsPage } from './pages/admin/BusinessSettingsPage'
+
+// Espace admin chargé à part : les visiteurs ne téléchargent pas son code.
+const AdminLoginPage = lazy(() => import('./pages/admin/AdminLoginPage').then((m) => ({ default: m.AdminLoginPage })))
+const AdminLayout = lazy(() => import('./components/admin/AdminLayout').then((m) => ({ default: m.AdminLayout })))
+const OverviewPage = lazy(() => import('./pages/admin/OverviewPage').then((m) => ({ default: m.OverviewPage })))
+const AppointmentsPage = lazy(() => import('./pages/admin/AppointmentsPage').then((m) => ({ default: m.AppointmentsPage })))
+const ServicesPage = lazy(() => import('./pages/admin/ServicesPage').then((m) => ({ default: m.ServicesPage })))
+const BusinessHoursPage = lazy(() => import('./pages/admin/BusinessHoursPage').then((m) => ({ default: m.BusinessHoursPage })))
+const BlockedDatesPage = lazy(() => import('./pages/admin/BlockedDatesPage').then((m) => ({ default: m.BlockedDatesPage })))
+const BusinessSettingsPage = lazy(() => import('./pages/admin/BusinessSettingsPage').then((m) => ({ default: m.BusinessSettingsPage })))
 
 const withPublicLayout = (page: ReactNode) => (
   <PublicLayout>{page}</PublicLayout>
@@ -29,6 +31,7 @@ function App() {
     <ErrorBoundary>
       <AdminAuthProvider>
         <ScrollToTop />
+        <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={withPublicLayout(<HomePage />)} />
 
@@ -54,6 +57,7 @@ function App() {
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </Suspense>
       </AdminAuthProvider>
     </ErrorBoundary>
   )
