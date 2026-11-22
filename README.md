@@ -26,7 +26,7 @@ Site vitrine et système de réservation pour un technicien informatique qui se 
 
 - **Référencement local** : balises title/description et données structurées (JSON-LD) par page, plan du site généré à chaque déploiement à partir des prestations actives.
 - **Sécurité** : Row Level Security sur toutes les tables, réservation uniquement via une fonction serveur qui revalide tout, en-têtes HTTP (HSTS, CSP, nosniff, Referrer-Policy, Permissions-Policy, X-Frame-Options), champ piège anti-robots, limites de demandes.
-- Pas encore de tests automatisés : la règle anti-chevauchement est garantie par une contrainte de la base de données.
+- **Tests automatisés** : 17 tests (`npm test`, lanceur intégré à Node.js, aucune dépendance) sur le calcul des créneaux (horaires, jours fermés, délai de prévenance, chevauchements, marge de trajet, rendez-vous annulés) et les fonctions utilitaires. Ils tournent dans la CI avant chaque déploiement : un test en échec bloque la mise en ligne. Côté base, la règle anti-chevauchement reste garantie par une contrainte PostgreSQL.
 
 ## Stack technique
 
@@ -117,6 +117,7 @@ Le statut d'administrateur dépend uniquement de la table `admin_users`, jamais 
 npm install
 npm run dev      # développement
 npm run lint     # oxlint
+npm test         # tests automatisés (Node.js 22 ou plus)
 npm run build    # vérification TypeScript + build de production
 npm run preview  # prévisualiser le build
 ```
@@ -125,7 +126,7 @@ npm run preview  # prévisualiser le build
 
 Chaque push sur `main` lance [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml) :
 
-1. build de l'application ;
+1. tests automatisés, puis build de l'application ;
 2. génération de `sitemap.xml` et `.htaccess` par `scripts/seo-files.mjs`, à partir des prestations actives (redirections des routes de l'application, en-têtes de sécurité, cache) ;
 3. envoi de l'archive à Hostinger par son API.
 
@@ -146,6 +147,7 @@ supabase/
   functions/    e-mails (Resend)
 scripts/
   seo-files.mjs plan du site et règles serveur, générés au déploiement
+tests/          tests automatisés (node --test)
 ```
 
 ## Auteur

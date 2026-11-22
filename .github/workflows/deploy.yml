@@ -21,11 +21,16 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # 22 : node --test lit les tests TypeScript sans outil supplémentaire
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
         run: npm ci
+
+      # Un test en échec arrête tout : le site n'est pas redéployé.
+      - name: Tests
+        run: npm test
 
       - name: Build
         run: npm run build
